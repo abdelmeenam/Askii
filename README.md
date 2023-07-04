@@ -18,6 +18,8 @@ https://github.com/abdelmeenam/stackoverflow-clone.git
 2- Install dependencies
 ```bash
 composer install
+npm install
+npm run build
 ```
 3- Create a copy of your .env file
 ```bash
