@@ -50,7 +50,7 @@ Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , functio
         ->name('destroy');
 });
 
-Route::resource('questions', QuestionsController::class)->middleware('auth');
+Route::resource('questions', QuestionsController::class);
 
 
 

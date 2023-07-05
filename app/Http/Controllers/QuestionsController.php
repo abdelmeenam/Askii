@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+    /**
+     * QuestionsController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index' , 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,12 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $qeustions = Question::paginate();
+        $questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')
+            ->select('questions.*' , 'users.name as user_name')
+            //->orderBy('created_at' , 'asc')
+            ->latest()
+            ->simplepaginate(5);
+
         return view('questions.index', [
             'questions' => $questions,
         ]);
@@ -26,8 +40,9 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-            return redirect()->route('questions.index')
-                ->with('success', 'Question created successfully.');
+        return view('questions.create' , [
+            'question' => new Question(),
+        ]);
     }
 
     /**
@@ -38,7 +53,19 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required' , 'string' , 'max:255'],
+            'description' => ['required' , 'string' ],
+        ]);
+
+        $question = Question::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->route('questions.index')
+            ->with('success', 'Question created successfully.');
     }
 
     /**
@@ -49,7 +76,14 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //
+        //$question = Question::findOrFail($id);
+        $question = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')
+            ->select('questions.*' , 'users.name as user_name')
+            ->findOrFail($id);
+
+        return view('questions.show', [
+            'question' => $question,
+        ]);
     }
 
     /**
@@ -60,7 +94,16 @@ class QuestionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::findOrFail($id);
+
+        if ( ! (auth()->user()->id == $question->user_id) ) {
+            abort(404);
+        }
+
+        return view('questions.edit', [
+            'question' => $question,
+        ]);
+
     }
 
     /**
@@ -72,7 +115,17 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => ['required' , 'string' , 'max:255'],
+            'description' => ['required' , 'string' ],
+            'status' => ['in:open,closed']
+        ]);
+
+        $question = Question::findOrFail($id);
+        $question->update($request->all());
+
+        return redirect()->route('questions.index')
+            ->with('success', 'Question updated successfully.');
     }
 
     /**
@@ -83,6 +136,9 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Question::destroy($id);
+
+        return redirect()->route('questions.index')
+            ->with('success', 'Question deleted successfully.');
     }
 }
