@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class UserProfile extends Controller
@@ -18,7 +18,6 @@ class UserProfile extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-
         //validate
         $this->validate($request, [
             'name' => ['required' , 'string' ],
@@ -26,11 +25,22 @@ class UserProfile extends Controller
             'profile_photo' => ['nullable' , 'image' , 'mimes:jpg,jpeg,png,gif,svg' , 'max:512000'],
         ]);
 
+        $previousProfilePhoto = $user->profile_photo;
+        $data = $request->except('image');
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email
-        ]);
-        return redirect()->back()->with('success', 'Profile updated successfully');
+        //upload image
+        if($request->hasFile('profile_photo')){
+            $file = $request->file('profile_photo');
+            $path = $file->store('uploads' , ['disk' => 'public']);
+            $data['profile_photo'] = $path;
+        }
+
+        $user->update($data);
+
+        if ($previousProfilePhoto  && $previousProfilePhoto != $user->profile_photo) {
+            Storage::disk('public')->delete($previousProfilePhoto);
+        }
+
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
     }
 }

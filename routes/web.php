@@ -53,13 +53,14 @@ Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , functio
         ->name('destroy');
 });
 
-
 // Profile
-Route::get('/profile', [UserProfile::class, 'edit'])->name('edit')
-    ->name('profile')
-    ->middleware('auth');
-Route::put('/profile', [UserProfile::class, 'update'])->name('update')->middleware('auth');
+Route::group(['prefix'=>'profile'  , 'as'=>'profile.' ,'middleware'=>'auth'] , function (){
+    Route::get('/', [UserProfile::class ,'edit'])
+        ->name('edit');
 
+    Route::put('/', [UserProfile::class ,'update'])
+        ->name('update');
+});
 
 
 // Questions
