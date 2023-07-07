@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 class TagsController extends Controller
 {
 
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -20,7 +19,6 @@ class TagsController extends Controller
     public function index()
     {
         $tags = Tag::all();
-
         return view('tags.index', compact('tags'));
     }
 

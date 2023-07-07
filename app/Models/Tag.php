@@ -11,4 +11,17 @@ class Tag extends Model
 
 
     protected $fillable = ['name', 'slug'];
+
+
+    public function questions()
+    {
+        return $this->belongsToMany(
+            Question::class ,
+            'question_tag' ,
+            'tag_id' ,
+            'question_id',
+            'id',
+            'id');
+    }
+
 }

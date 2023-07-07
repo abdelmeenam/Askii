@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -22,12 +21,13 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')
-            ->select('questions.*' , 'users.name as user_name')
-            //->orderBy('created_at' , 'asc')
+        //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
+       // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
+        // Eager loading
+        $questions = Question::with('user')
+            ->withCount('answers')
             ->latest()
-            ->simplepaginate(5);
-
+            ->paginate(5);
         return view('questions.index', [
             'questions' => $questions,
         ]);
@@ -76,9 +76,8 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //$question = Question::findOrFail($id);
-        $question = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')
-            ->select('questions.*' , 'users.name as user_name')
+        $question = Question::with('user')
+            ->withCount('answers')
             ->findOrFail($id);
 
         return view('questions.show', [

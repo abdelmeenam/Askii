@@ -1,90 +1,59 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 0 auto;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            color: #333;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-    </style>
-</head>
-<body>
-<h1>
-    @auth()
-        hello , {{Auth::user()->name}}
-    @endauth
-</h1>
-<h2>
-<a href="{{route('questions.create')}}">Create Question</a>
-</h2>
-<table class="table" style="">
-    <thead>
-    <tr>
-        <th>title</th>
-        <th>description</th>
-        <th>status</th>
-        <th>views</th>
-        <th>Asked by</th>
+@extends('layouts.default')
 
-        <th>Created At</th>
+@section('title')
+    Questions List
+    <a href="{{route('questions.create')}}" class="btn btn-outline-primary btn-xs">Create New Question</a>
+@endsection
 
-        <th>DELETE</th>
-        <th>EDIT</th>
 
-    </tr>
-    </thead>
-    <tbody>
+@section('content')
+
+    @if(session()->has('success'))
+        <div class="alert alert-success">
+            {{ session()->get('success') }}
+        </div>
+    @endif
+
     @foreach($questions as $question)
-        <tr>
-            <td><a href="{{route( 'questions.show',$question->id )}}">{{ $question->title }}</a></td>
-            <td>{{ Str::words($question->description , 20) }}</td>
-            <td>{{ $question->status }}</td>
-            <td>{{ $question->views }}</td>
-            <td>{{ $question->user_name }}</td>
+        <div class="card mb-3" >
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{route('questions.show' , $question->id) }}">{{ $question->title }}</a></h5>
+                <div class="text-muted mb-4">
+                    Asked: <strong> {{ $question->created_at->diffForHumans() }}_____</strong>
+                    By: <strong>{{ $question->user->name }}______</strong>
+                    # of Answers: <strong> {{ $question->answers_count }} </strong>
 
+                </div>
+                <p class="card-text">{{ Str::words($question->description , 20 ) }}</p>
+            </div>
 
-            <td>{{ $question->created_at->diffForHumans() }}</td>
             @if(Auth::id() == $question->user_id)
-            <td>
-                <form class="delete-form" action="{{route('questions.destroy' , $question->id)}}" method="post">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </td>
-
-            <td>
-                <a href="{{route('questions.edit' , $question->id)}}" class="btn btn-primary btn-sm">Edit</a>
-            </td>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            {{--                        <a href="{{route('questions.show' , $question->id) }}" class="btn btn-outline-primary btn-sm">View</a>--}}
+                            <a href="{{route('questions.edit' , $question->id) }}" class="btn btn-outline-info btn-sm">Edit</a>
+                        </div>
+                        <div>
+                            <form action="{{route('questions.destroy' , $question->id)}}" method="post" class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             @endif
-
-        </tr>
+        </div>
     @endforeach
-    </tbody>
-</table>
+    {{ $questions->links() }}
 
-{{$questions->links()}}
+    <script>
+                setTimeout(function() {
+                    // document.querySelector('.alert').remove();
+                    document.querySelector('.alert').style.display = 'none';
+                },4000);
 
+            </script>
 
-</body>
-</html>
+@endsection

@@ -1,19 +1,30 @@
 
-<form action="{{$action}}" method="post">
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li class="mb-0">{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+<form action="{{ $action }}" method="post">
     @csrf
     @if($method == 'PUT')
         @method('PUT')
     @endif
     <div class="form-group mb-3">
-        <label for="name">Tag Name:</label>
-        <div class="mt-2">
-            <input type="text" name="name" value="{{old('name',$tag->name)}}" class="form-control ">
+        <label for="name" class="form-label">Tag Name</label>
+        <div class="mt-3">
+            <input type="text" value="{{ old('name' , $tag->name) }}"  class="form-control @error('name') is-invalid @enderror " id="name" name="name" required>
+
             @error('name')
-                <span class="text-danger">{{$errors->first('name')}}</span>
+            <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
-    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>

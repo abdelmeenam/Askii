@@ -9,7 +9,7 @@ class UserProfile extends Controller
     //edit
     public function edit()
     {
-        return view('user-profile.edit' ,[
+        return view('user-profile.user-profile' ,[
             'user' => auth()->user()
         ]);
     }
@@ -18,10 +18,9 @@ class UserProfile extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        //validate
         $this->validate($request, [
             'name' => ['required' , 'string' ],
-            'email' => ['required' , 'email' , 'unique:users,email,' . auth()->id()],
+            //'email' => ['required' , 'email' , 'unique:users,email,' . auth()->id()],
             'profile_photo' => ['nullable' , 'image' , 'mimes:jpg,jpeg,png,gif,svg' , 'max:512000'],
         ]);
 
