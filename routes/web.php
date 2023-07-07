@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TagsController;
+use App\Http\Controllers\UserProfile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,12 +25,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Profile
+//Route::middleware('auth')->group(function () {
+//    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+//});
 
+// Tags
 Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , function (){
     Route::get('', [TagsController::class ,'index'])
         ->name('index');
@@ -50,7 +53,20 @@ Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , functio
         ->name('destroy');
 });
 
+
+// Profile
+Route::get('/profile', [UserProfile::class, 'edit'])->name('edit')
+    ->name('profile')
+    ->middleware('auth');
+Route::put('/profile', [UserProfile::class, 'update'])->name('update')->middleware('auth');
+
+
+
+// Questions
 Route::resource('questions', QuestionsController::class);
+
+
+
 
 
 
