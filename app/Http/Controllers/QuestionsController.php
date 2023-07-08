@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class QuestionsController extends Controller
             ->withCount('answers')
             ->latest()
             ->paginate(5);
+
         return view('questions.index', [
             'questions' => $questions,
         ]);
@@ -76,12 +78,16 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with('user')
-            ->withCount('answers')
-            ->findOrFail($id);
+        $question = Question::findOrfail($id);
+        $questionsCount = $question->answers->count();
+        $answers = $question->answers()->with('user')->get();
+        //$answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
+
 
         return view('questions.show', [
             'question' => $question,
+            'answers' => $answers,
+            'questionsCount' => $questionsCount,
         ]);
     }
 

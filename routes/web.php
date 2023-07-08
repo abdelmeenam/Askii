@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TagsController;
@@ -60,6 +61,21 @@ Route::group(['prefix'=>'profile'  , 'as'=>'profile.' ,'middleware'=>'auth'] , f
 
     Route::put('/', [UserProfile::class ,'update'])
         ->name('update');
+});
+
+// Answers
+Route::group(['prefix'=>'answers'  , 'as'=>'answers.' ,'middleware'=>'auth'] , function (){
+    Route::post('/', [AnswersController::class ,'store'])
+        ->name('store');
+
+    Route::get('{answerId}/edit', [AnswersController::class ,'edit'])
+        ->name('edit');
+
+    Route::put('{answerId}', [AnswersController::class ,'update'])
+        ->name('update');
+
+    Route::delete('{answerId}', [AnswersController::class ,'destroy'])
+        ->name('destroy');
 });
 
 
