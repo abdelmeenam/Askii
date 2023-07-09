@@ -27,6 +27,15 @@
                 By: <strong>{{ $question->user->name }}</strong>
             </div>
             <p class="card-text">{{ $question->description  }}</p>
+            <div>
+                Tags
+                    <ul>
+                        @foreach($question->tags as $tag)
+                            <li>{{ $tag->name }}</li>
+                            {{--   <a href="{{ route('tags.show' , $tag->id) }}" class="badge badge-info">{{ $tag->name }}</a>--}}
+                        @endforeach
+                    </ul>
+            </div>
         </div>
     </div>
 

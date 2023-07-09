@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuestionsController extends Controller
 {
@@ -25,7 +27,7 @@ class QuestionsController extends Controller
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
        // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
         // Eager loading
-        $questions = Question::with('user')
+        $questions = Question::with('user' , 'tags')
             ->withCount('answers')
             ->latest()
             ->paginate(5);
@@ -42,9 +44,12 @@ class QuestionsController extends Controller
      */
     public function create()
     {
+        // ALl tags
+        $tags = Tag::all();
         return view('questions.create' , [
             'question' => new Question(),
-        ]);
+            'tags' => $tags,
+            ]);
     }
 
     /**
@@ -58,13 +63,23 @@ class QuestionsController extends Controller
         $request->validate([
             'title' => ['required' , 'string' , 'max:255'],
             'description' => ['required' , 'string' ],
+            'tags' => ['required' , 'array' , 'exists:tags,id'],
         ]);
 
-        $question = Question::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'user_id' => auth()->user()->id,
-        ]);
+        // DB Transaction
+        DB::beginTransaction();
+        try{
+            $question = Question::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'user_id' => auth()->user()->id,
+            ]);
+            $question->tags()->attach($request->tags);
+            DB::commit();
+        }catch (\Throwable $e){
+            DB::rollback();
+            throw $e;
+        }
 
         return redirect()->route('questions.index')
             ->with('success', 'Question created successfully.');
@@ -80,9 +95,8 @@ class QuestionsController extends Controller
     {
         $question = Question::findOrfail($id);
         $questionsCount = $question->answers->count();
-        $answers = $question->answers()->with('user')->get();
-        //$answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
-
+        //$answers = $question->answers()->with('user')->get();
+        $answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
 
         return view('questions.show', [
             'question' => $question,
@@ -101,12 +115,19 @@ class QuestionsController extends Controller
     {
         $question = Question::findOrFail($id);
 
+        // Tags
+        $tags = Tag::all();
+        $questionTags = $question->tags()->pluck('id')->toArray();
+        //dd($tags , $questionTags);
+
         if ( ! (auth()->user()->id == $question->user_id) ) {
             abort(404);
         }
 
         return view('questions.edit', [
             'question' => $question,
+            'tags' => $tags,
+            'questionTags' => $questionTags,
         ]);
 
     }
@@ -123,12 +144,21 @@ class QuestionsController extends Controller
         $request->validate([
             'title' => ['required' , 'string' , 'max:255'],
             'description' => ['required' , 'string' ],
-            'status' => ['in:open,closed']
+            'status' => ['in:open,closed'],
+            'tags' => ['required' , 'array' , 'exists:tags,id'],
         ]);
-
         $question = Question::findOrFail($id);
-        $question->update($request->all());
 
+        // DB Transaction
+        DB::beginTransaction();
+        try{
+            $question->update($request->all());
+            $question->tags()->sync($request->tags);
+            DB::commit();
+        }catch (\Throwable $e){
+            DB::rollback();
+            throw $e;
+        }
         return redirect()->route('questions.index')
             ->with('success', 'Question updated successfully.');
     }
@@ -142,7 +172,6 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         Question::destroy($id);
-
         return redirect()->route('questions.index')
             ->with('success', 'Question deleted successfully.');
     }

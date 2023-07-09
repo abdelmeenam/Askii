@@ -25,6 +25,9 @@
 
                 </div>
                 <p class="card-text">{{ Str::words($question->description , 20 ) }}</p>
+                <div>
+                    Tags: {{$question->tags()->pluck('name')->implode(', ')}}
+                </div>
             </div>
 
             @if(Auth::id() == $question->user_id)

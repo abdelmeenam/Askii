@@ -33,12 +33,13 @@ class Question extends Model
     public function tags()
     {
         return $this->belongsToMany(
-            Tag::class ,            // Related model
-            'question_tag',          // Pivot table
-            'question_id',   // F.K of this current model
-            'tag_id',        // F.K of the related model
-            'id',
-            'id'
+            Tag::class,     // Related model
+            'question_tag', // Pivot table
+            'question_id',  // F.K for current model in pivot table
+            'tag_id',       // F.K for related model in pivot table
+            'id',           // P.K for current model
+            'id'            // P.K for related model
         );
     }
+
 }
