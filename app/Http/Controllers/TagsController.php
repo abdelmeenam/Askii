@@ -47,6 +47,7 @@ class TagsController extends Controller
 
     public function update(UpdateTagRequest $request, $id)
     {
+        // Mass assignment method
         $tag = Tag::findorFail($id);
         $tag->update([
             'name' => $request->name,
