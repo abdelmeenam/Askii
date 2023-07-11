@@ -24,13 +24,26 @@ class QuestionsController extends Controller
      */
     public function index()
     {
+        $searchTerm = trim(request('search'));
+        $tag_id = request('tag_id');
+
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
        // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
         // Eager loading
         $questions = Question::with('user' , 'tags')
             ->withCount('answers')
             ->latest()
-            ->paginate(5);
+            ->when($searchTerm , function ($query , $searchTerm){
+                $query->where('title' , 'like' , '%'.$searchTerm.'%')
+                    ->orWhere('description' , 'like' , '%'.$searchTerm.'%');
+            })
+            ->when($tag_id, function ($query , $tag_id){
+                //$query->whereRaw('questions.id IN (SELECT question_id FROM question_tag WHERE tag_id = ?)', [$tag_id]);
+                $query->whereHas('tags' , function ($query) use ($tag_id){
+                    $query->where('id' , $tag_id);
+                });
+            })
+            ->paginate(4);
 
         return view('questions.index', [
             'questions' => $questions,

@@ -49,7 +49,7 @@
             @endif
         </div>
     @endforeach
-    {{ $questions->links() }}
+    {{ $questions->withQueryString()->links() }}
 
     <script>
                 setTimeout(function() {
