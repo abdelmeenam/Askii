@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionsController extends Controller
 {
@@ -30,7 +31,7 @@ class QuestionsController extends Controller
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
        // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
         // Eager loading
-        $questions = Question::with('user' , 'tags')
+        $questions = Question::with(['user', 'tags'])
             ->withCount('answers')
             ->latest()
             ->when($searchTerm , function ($query , $searchTerm){
@@ -43,7 +44,7 @@ class QuestionsController extends Controller
                     $query->where('id' , $tag_id);
                 });
             })
-            ->paginate(4);
+            ->paginate(5);
 
         return view('questions.index', [
             'questions' => $questions,
@@ -79,6 +80,8 @@ class QuestionsController extends Controller
             'tags' => ['required' , 'array' , 'exists:tags,id'],
         ]);
 
+        //dd($request->tags);
+
         // DB Transaction
         DB::beginTransaction();
         try{
@@ -87,6 +90,7 @@ class QuestionsController extends Controller
                 'description' => $request->description,
                 'user_id' => auth()->user()->id,
             ]);
+
             $question->tags()->attach($request->tags);
             DB::commit();
         }catch (\Throwable $e){
@@ -107,9 +111,9 @@ class QuestionsController extends Controller
     public function show($id)
     {
         $question = Question::findOrfail($id);
-        $questionsCount = $question->answers->count();
-        //$answers = $question->answers()->with('user')->get();
-        $answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
+        $questionsCount = $question->answers->count();          //->withCount('answers')
+        $answers = $question->answers()->with('user')->get();
+        //$answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
 
         return view('questions.show', [
             'question' => $question,
@@ -188,4 +192,6 @@ class QuestionsController extends Controller
         return redirect()->route('questions.index')
             ->with('success', 'Question deleted successfully.');
     }
+
+
 }

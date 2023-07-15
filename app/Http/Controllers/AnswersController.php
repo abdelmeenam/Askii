@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnswersController extends Controller
 {
@@ -66,5 +67,31 @@ class AnswersController extends Controller
 
         $answer->update($request->all());
         return redirect()->route('questions.show' , $answer->question_id)->with('success' , 'Answer updated successfully');
+    }
+
+    /**
+     * @param $question_id
+     * @param $answer_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function bestAnswer(Request $request , $answerId){
+
+        $answer = Answer::findOrFail($answerId);
+        $question= $answer->question;
+
+        if ( Auth::id() != $question->user_id) {
+            return redirect()->route('questions.show' , $answer->question_id)
+                ->with('error', 'You are not authorized to mark any answer as best.');
+        };
+
+        $question->answers()->update([
+            'best_answer' => 0
+        ]);
+        $answer->forceFill([
+            'best_answer' => 1
+        ])->save();
+
+        return redirect()->route('questions.show' , $answer->question_id)
+            ->with('success', 'Best answer updated successfully.');
     }
 }

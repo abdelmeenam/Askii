@@ -7,16 +7,6 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfile;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,7 +43,6 @@ Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , functio
     Route::delete('/{tag_id}', [TagsController::class ,'destroy'])
         ->name('destroy');
 });
-
 // Profile
 Route::group(['prefix'=>'profile'  , 'as'=>'profile.' ,'middleware'=>'auth'] , function (){
     Route::get('/', [UserProfile::class ,'edit'])
@@ -63,27 +52,27 @@ Route::group(['prefix'=>'profile'  , 'as'=>'profile.' ,'middleware'=>'auth'] , f
         ->name('update');
 });
 
+
 // Answers
 Route::group(['prefix'=>'answers'  , 'as'=>'answers.' ,'middleware'=>'auth'] , function (){
+
+    Route::put('/{id}/best', [AnswersController::class, 'bestAnswer'])
+        ->name('best');
+
     Route::post('/', [AnswersController::class ,'store'])
         ->name('store');
-
     Route::get('{answerId}/edit', [AnswersController::class ,'edit'])
         ->name('edit');
-
     Route::put('{answerId}', [AnswersController::class ,'update'])
         ->name('update');
-
     Route::delete('{answerId}', [AnswersController::class ,'destroy'])
         ->name('destroy');
+
 });
 
 
 // Questions
 Route::resource('questions', QuestionsController::class);
-
-
-
 
 
 

@@ -44,15 +44,29 @@
         <h3> {{$questionsCount}} Answers</h3>
         @forelse($answers as $answer)
             <div class="card-body">
+
+                @if($answer->best_answer == true)
+                    <span class="badge bg-success">Best Answer</span>
+                </span> @endif
+
                 <p class="card-text">{{ $answer->description }}</p>
                 <div class="text-muted mb-4">
                     Asked: <strong> {{ $answer->created_at->diffForHumans() }}_____</strong>
                     By: <strong>{{ $answer->user->name }}</strong>
                 </div>
 
+                @auth()
+                    @if( $answer->best_answer == false  && Auth::id() == $question->user_id)
+                        <form action="{{ route('answers.best' , $answer->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm">Vote as best answer</button>
+                        </form>
+                    @endif
+                @endauth
+
                 @if(Auth::id() == $answer->user_id)
                 <div>
-
                     <form class="d-inline" action="{{route('answers.destroy' ,  $answer->id)}}" method="post" class="delete-form">
                         @csrf
                         @method('DELETE')
