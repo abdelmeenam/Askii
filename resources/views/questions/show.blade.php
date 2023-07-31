@@ -5,17 +5,7 @@
 
 @section('content')
 
-    @if(session()->has('error'))
-        <div class="alert alert-danger">
-            {{ session()->get('error') }}
-        </div>
-    @endif
-
-    @if(session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
-        </div>
-    @endif
+    <x-flash-message/>
 
 
     <!-- Question Details -->
@@ -60,7 +50,7 @@
                         <form action="{{ route('answers.best' , $answer->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <button type="submit" class="btn btn-success btn-sm">Vote as best answer</button>
+                            <button type="submit" class="btn btn-success  btn-sm mb-1">Vote as best answer</button>
                         </form>
                     @endif
                 @endauth
@@ -72,7 +62,7 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                     </form>
-                    <a  href="{{route('answers.edit' ,  $answer->id)}}" class="btn btn-outline-primary btn-sm ">Edit</a>
+                    <a  href="{{route('answers.edit' ,  $answer->id)}}" class="btn btn-outline-primary btn-sm  ">Edit</a>
                 </div>
                 @endif
             </div>

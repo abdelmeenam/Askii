@@ -44,7 +44,7 @@ class QuestionsController extends Controller
                     $query->where('id' , $tag_id);
                 });
             })
-            ->paginate(5);
+            ->paginate(7);
 
         return view('questions.index', [
             'questions' => $questions,
