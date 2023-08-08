@@ -84,9 +84,12 @@ class AnswersController extends Controller
                 ->with('error', 'You are not authorized to mark any answer as best.');
         };
 
+        // update all answers to 0 (not best answer)
         $question->answers()->update([
             'best_answer' => 0
         ]);
+
+        // update the answer to 1 (best answer)
         $answer->forceFill([
             'best_answer' => 1
         ])->save();

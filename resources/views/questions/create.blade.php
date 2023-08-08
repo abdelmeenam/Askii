@@ -6,24 +6,19 @@
 
     <form action="{{route('questions.store')}}" method="post">
         @csrf
+
+{{--        <x-test >--}}
+{{--            <x-slot name="title">php post</x-slot>--}}
+{{--            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad architecto aut dicta, distinctio dolore eos error impedit nisi, pariatur quisquam quo repellat soluta voluptas, voluptates. Alias cum illo minima?</p>--}}
+{{--        </x-test>--}}
+
         <div class="form-group mb-3">
-            <label for="title">Question Title</label>
-            <div>
-                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"  name="title" value="{{old('title')}}">
-                @error('title')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+            <x-form-input  type="text" id="title"  label="Question Title" name="title" :value="old('title')">
+            </x-form-input>
         </div>
 
         <div class="form-group mb-3">
-            <label for="description">Question Description</label>
-            <div>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5">{{old('description')}}</textarea>
-                @error('title')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+            <x-form-textarea id="description" label="Question Description" name="description"></x-form-textarea>
         </div>
 
         <!-- Tags -->
@@ -44,7 +39,6 @@
                 <button type="submit" class="btn btn-primary">Create Question</button>
             </div>
         </div>
-
     </form>
 
 @endsection
