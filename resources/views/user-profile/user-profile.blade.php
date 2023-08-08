@@ -26,7 +26,7 @@
 
                 <!--name input-->
                 <div class="form-group mb-3">
-                    <label for="name">Name</label>
+                    <label for="name">{{__('Name')}}</label>
                     <div>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"  name="name" value="{{old('name' , $user->name)}}">
                         @error('name')
@@ -37,7 +37,7 @@
 
                 <!--first name input-->
                 <div class="form-group mb-3">
-                    <label for="name">First name</label>
+                    <label for="name">{{__('First Name')}}</label>
                     <div>
                         <input type="text" class="form-control @error('first_name') is-invalid @enderror" id="first_name"  name="first_name" value="{{old('first_name' , $user->profile->first_name)}}">
                         @error('first_name')
@@ -48,7 +48,7 @@
 
                 <!--last name input-->
                 <div class="form-group mb-3">
-                    <label for="name">Last name</label>
+                    <label for="name">{{__('Last Name')}}</label>
                     <div>
                         <input type="text" class="form-control @error('last_name') is-invalid @enderror" id="last_name"  name="last_name" value="{{old('last_name' , $user->profile->last_name)}}">
                         @error('last_name')
@@ -59,7 +59,7 @@
 
                 <!--phone input-->
                 <div class="form-group mb-3">
-                    <label for="name">Phone</label>
+                    <label for="name">{{__('Phone')}}</label>
                     <div>
                         <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone"  name="phone_number" value="{{old('phone' , $user->profile->phone_number)}}">
                         @error('phone')
@@ -70,24 +70,24 @@
 
                 <!--Gender input-->
                 <div class="form-group mb-3">
-                    <label for="name">Gender</label>
+                    <label for="name">{{__('Gender')}}</label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="gender" value = 'male'  id="flexRadioDefault1" @checked($user->profile->gender == 'male')>
                         <label class="form-check-label" for="male">
-                            male
+                            {{__('Male')}}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="gender" value = 'female' id="flexRadioDefault2" @checked($user->profile->gender == 'female')>
                         <label class="form-check-label" for="female">
-                            female
+                            {{__('Female')}}
                         </label>
                     </div>
                 </div>
 
                 <!--date of birth input-->
                  <div class="form-group mb-3">
-                    <label for="name">Date of birth</label>
+                    <label for="name">{{__('Date of birth')}}</label>
                     <div>
                         <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" id="date_of_birth"  name="date_of_birth" value="{{old('date_of_birth' , $user->profile->date_of_birth)}}">
                         @error('date_of_birth')
@@ -98,7 +98,7 @@
 
                 <!--city input-->
                 <div class="form-group mb-3">
-                    <label for="name">City</label>
+                    <label for="name">{{__('City')}}</label>
                     <div>
                         <input type="text" class="form-control @error('city') is-invalid @enderror" id="city"  name="city" value="{{old('city' , $user->profile->city)}}">
                         @error('city')
@@ -109,7 +109,7 @@
 
                 <!--country input-->
                 <div class="form-group mb-3">
-                    <label for="name">Country</label>
+                    <label for="name">{{__('Country')}}</label>
                     <select class="form-select @error('country') is-invalid @enderror" aria-label="Default select example" name="country">
                         <option value="">Open this select menu</option>
                         @foreach($countries as $code =>$name)
@@ -120,7 +120,7 @@
 
                 <!--Email input-->
                 <div class="form-group mb-3">
-                    <label for="email">Email Address</label>
+                    <label for="email">{{__('Email Address')}}</label>
                     <div>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"  name="email" value="{{old('email' , $user->email)}}" disabled>
                         @error('email')
@@ -131,7 +131,7 @@
 
                 <!--Profile input-->
                 <div class="form-group mb-3">
-                    <label for="profile_photo">Profile Photo</label>
+                    <label for="profile_photo">{{__('Profile Photo')}}</label>
                     <div>
                         <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo"  name="profile_photo">
                         @error('profile_photo')

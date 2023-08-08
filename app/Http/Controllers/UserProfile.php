@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Symfony\Component\Intl\Countries;
-
 
 class UserProfile extends Controller
 {
@@ -12,7 +12,8 @@ class UserProfile extends Controller
     public function edit()
     {
         return view('user-profile.user-profile' ,[
-            'countries' => Countries::getNames(),
+            //'countries' => Countries::getNames(),
+            'countries' => Countries::getNames(App::currentLocale()),
             'user' => auth()->user()
         ]);
     }

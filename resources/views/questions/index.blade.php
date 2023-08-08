@@ -1,8 +1,9 @@
 @extends('layouts.default')
 
 @section('title')
-    Questions List
-    <a href="{{route('questions.create')}}" class="btn btn-outline-primary btn-xs">Create New Question</a>
+{{__('Questions List')}}
+    <a href="{{route('questions.create')}}" class="btn btn-outline-primary btn-xs">{{__('Create Question')}}
+    </a>
 @endsection
 
 
@@ -20,13 +21,13 @@
                 <h5 class="card-title"><a href="{{route('questions.show' , $question->id) }}">{{ $question->title }}</a></h5>
                 <div class="text-muted mb-4">
                     Asked: <strong> {{ $question->created_at->diffForHumans() }}_____</strong>
-                    By: <strong>{{ $question->user->name }}______</strong>
+                    {{__('By')}}: <strong>{{ $question->user->name }}______</strong>
                     # of Answers: <strong> {{ $question->answers_count }} </strong>
 
                 </div>
                 <p class="card-text">{{ Str::words($question->description , 20 ) }}</p>
                 <div>
-                    Tags: {{$question->tags->pluck('name')->implode(', ')}}
+                    {{__('Tags')}}: {{$question->tags->pluck('name')->implode(', ')}}
                 </div>
             </div>
 

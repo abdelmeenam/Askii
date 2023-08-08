@@ -6,6 +6,7 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfile;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 Route::get('/', function () {
@@ -23,56 +24,56 @@ Route::get('/dashboard', function () {
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-// Tags
-Route::group(['prefix'=>'tags'  , 'as'=>'tags.' ,'middleware'=>'auth'] , function (){
-    Route::get('', [TagsController::class ,'index'])
-        ->name('index');
+Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRedirect', 'localeViewPath'] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
 
-    Route::get('/create', [TagsController::class ,'create'])
-        ->name('create');
+    // Tags
+    Route::group(['prefix' => 'tags', 'as' => 'tags.'], function () {
+        Route::get('', [TagsController::class, 'index'])
+            ->name('index');
 
-    Route::post('', [TagsController::class ,'store'])
-        ->name('store');
+        Route::get('/create', [TagsController::class, 'create'])
+            ->name('create');
 
-    Route::get('/{tag_id}/edit', [TagsController::class ,'edit'])
-        ->name('edit');
+        Route::post('', [TagsController::class, 'store'])
+            ->name('store');
 
-    Route::put('/{id}', [TagsController::class ,'update'])
-        ->name('update');
+        Route::get('/{tag_id}/edit', [TagsController::class, 'edit'])
+            ->name('edit');
 
-    Route::delete('/{tag_id}', [TagsController::class ,'destroy'])
-        ->name('destroy');
+        Route::put('/{id}', [TagsController::class, 'update'])
+            ->name('update');
+
+        Route::delete('/{tag_id}', [TagsController::class, 'destroy'])
+            ->name('destroy');
+    });
+    // Profile
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/', [UserProfile::class, 'edit'])
+            ->name('edit');
+
+        Route::put('/', [UserProfile::class, 'update'])
+            ->name('update');
+    });
+    // Answers
+    Route::group(['prefix' => 'answers', 'as' => 'answers.'], function () {
+
+        Route::put('/{id}/best', [AnswersController::class, 'bestAnswer'])
+            ->name('best');
+
+        Route::post('/', [AnswersController::class, 'store'])
+            ->name('store');
+        Route::get('{answerId}/edit', [AnswersController::class, 'edit'])
+            ->name('edit');
+        Route::put('{answerId}', [AnswersController::class, 'update'])
+            ->name('update');
+        Route::delete('{answerId}', [AnswersController::class, 'destroy'])
+            ->name('destroy');
+
+    });
+    // Questions
+    Route::resource('questions', QuestionsController::class);
 });
-// Profile
-Route::group(['prefix'=>'profile'  , 'as'=>'profile.' ,'middleware'=>'auth'] , function (){
-    Route::get('/', [UserProfile::class ,'edit'])
-        ->name('edit');
 
-    Route::put('/', [UserProfile::class ,'update'])
-        ->name('update');
-});
-
-
-// Answers
-Route::group(['prefix'=>'answers'  , 'as'=>'answers.' ,'middleware'=>'auth'] , function (){
-
-    Route::put('/{id}/best', [AnswersController::class, 'bestAnswer'])
-        ->name('best');
-
-    Route::post('/', [AnswersController::class ,'store'])
-        ->name('store');
-    Route::get('{answerId}/edit', [AnswersController::class ,'edit'])
-        ->name('edit');
-    Route::put('{answerId}', [AnswersController::class ,'update'])
-        ->name('update');
-    Route::delete('{answerId}', [AnswersController::class ,'destroy'])
-        ->name('destroy');
-
-});
-
-
-// Questions
-Route::resource('questions', QuestionsController::class);
 
 
 
