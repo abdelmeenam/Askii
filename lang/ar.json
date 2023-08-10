@@ -13,6 +13,8 @@
     "City": "المدينة",
     "Profile Photo": "صورة البروفايل",
     "Questions List": "الأسئلة",
+    "Question title": "عنوان السؤال",
+    "New Question": "سؤال جديد",
     "Asked": "طرحت في",
     "By": "بواسطة",
     "Answers": "الإجابات",
@@ -25,6 +27,7 @@
     "Overview": "نظرة عامة",
     "Inventory": "المخزون",
     "Customers": "العملاء",
-    "Products": "المنتجات"
+    "Products": "المنتجات",
+    "Language": "اللغات"
 
 }

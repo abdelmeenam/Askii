@@ -22,7 +22,7 @@ class QuestionFactory extends Factory
             'description' => fake()->paragraphs(3, true),
             'status' => fake()->randomElement(['open', 'closed']),
             'views' => fake()->numberBetween(0, 100),
-            'user_id' => fake()->numberBetween(1, 10),
+            'user_id' => fake()->numberBetween(1, 5),
         ];
     }
 }

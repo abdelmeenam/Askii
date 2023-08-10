@@ -12,38 +12,36 @@
         </div>
     @endif
 
-    @if(Auth::user())
-        User: {{ Auth::user()->name }}
-    @endif
-
     <table class="table">
         <thead>
-        <tr>
-            <th>Tag id</th>
-            <th>Tag Name</th>
-            <th>Tag Slug</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-
-        </tr>
+            <tr>
+                <th>Tag id</th>
+                <th>Tag Name</th>
+                <th>Tag Slug</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach($tags as $tag)
-            <tr>
-                <td>{{ $tag->id }}</td>
-                <td><a href="{{route('tags.edit' , $tag->id)}}">{{ $tag->name }}</a></td>
-                <td>{{ $tag->slug }}</td>
-                <td>{{ $tag->created_at }}</td>
-                <td>{{ $tag->updated_at }}</td>
-                <td>
-                    <form class="delete-form" action="{{ route('tags.destroy' , $tag->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
+            @foreach($tags as $tag)
+                <tr>
+                    <td>{{ $tag->id }}</td>
+                    <td>{{ $tag->name }}</td>
+                    <td>{{ $tag->slug }}</td>
+                    <td>{{ $tag->created_at }}</td>
+                    <td>{{ $tag->updated_at }}</td>
+                    <td>
+                        <form class="delete-form" action="{{ route('tags.destroy' , $tag->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <a  href="{{ route('tags.edit' , $tag->id) }}" class="mt-2 btn btn-info btn-sm">Edit</a>
+                    </td>
+
+                </tr>
+            @endforeach
         </tbody>
     </table>
 

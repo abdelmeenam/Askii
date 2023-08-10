@@ -5,7 +5,7 @@
         @method('PUT')
     @endif
     <div class="form-group mb-3">
-        <label for="name">Question title:</label>
+        <label for="name">{{__('Question title')}}:</label>
         <div class="mt-2">
             <input type="text" name="title" value="{{old('title',$question->title)}}" class="form-control ">
             @error('title')
@@ -13,7 +13,7 @@
             @enderror
         </div>
 
-        <label for="name">Question description:</label>
+        <label for="name">'Question description':</label>
         <div class="mt-2">
             <input type="text" name="description" value="{{old('description',$question->description)}}" class="form-control ">
             @error('description')

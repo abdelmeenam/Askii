@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfile;
+use App\Http\Controllers\NotificationsController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -72,6 +73,9 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
     });
     // Questions
     Route::resource('questions', QuestionsController::class);
+    // Notifications
+    Route::get('/notifications', [NotificationsController::class, 'index'])
+        ->name('notifications.index');
 });
 
 

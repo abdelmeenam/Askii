@@ -16,10 +16,6 @@
     <title>{{ config('app.name') }}</title>
     @stack('styles')
 
-
-
-    <title>{{ config('app.name') }}</title>
-    @stack('styles')
 </head>
 <body>
 <header class="p-3 mb-3 border-bottom">
@@ -70,7 +66,6 @@
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
@@ -83,7 +78,8 @@
 
 <div class="container py-5">
     <header class="mb-4 bg-light">
-        <h2> @yield('title' , 'page Title')</h2>
+        <h2>
+            @yield('title' , 'page Title')</h2>
         <hr>
     </header>
     @yield('content')

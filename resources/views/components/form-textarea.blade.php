@@ -6,6 +6,6 @@
     </textarea>
 
     @error($name)
-    <p class="invalid-feedback">{{ $message }}</p>
+        <p class="invalid-feedback">{{ $message }}</p>
     @enderror
 </div>
