@@ -32,7 +32,6 @@
                 <li><a href="#" class="nav-link px-2 link-body-emphasis">{{__('Products')}}</a></li>
             </ul>
 
-
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"   method ="get" action="{{route('questions.index')}}" >
                 <input type="search" class="form-control" placeholder="Search..." name="search" aria-label="Search">
             </form>
@@ -45,11 +44,6 @@
 {{--                <ul class="dropdown-menu text-small" aria-labelledby="locale">--}}
 {{--                    <li><a class="dropdown-item" href="{{URL::current()}}?lang=ar">العربية</a></li>--}}
 {{--                    <li><a class="dropdown-item" href="{{URL::current()}}?lang=en">English</a></li>--}}
-
-{{--                    <li><a class="dropdown-item" href="/ar">العربية</a></li>   --}}
-{{--                    <li><a class="dropdown-item" href="/en">English</a></li>--}}
-{{--                </ul>--}}
-
                 <ul class="dropdown-menu text-small" aria-labelledby="locale">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <li>
@@ -61,6 +55,10 @@
                 </ul>
             </div>
 
+            <!-- Notification -->
+            <x-notification-menu></x-notification-menu>
+
+            <!-- User -->
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
@@ -68,10 +66,11 @@
                 <ul class="dropdown-menu text-small">
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li><hr class="dropdown-divider">Profille</li>
                     <li><a class="dropdown-item" href="#">Sign out</a></li>
                 </ul>
             </div>
+
         </div>
     </div>
 </header>

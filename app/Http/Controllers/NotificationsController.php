@@ -10,7 +10,6 @@ class NotificationsController extends Controller
     public function index()
     {
         $user = Auth::user();
-
         return view('notifications.index' , [
             'notifications' => $user->notifications()->paginate(10)
         ]);

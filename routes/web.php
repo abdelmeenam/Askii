@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRedirect', 'localeViewPath'] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
+Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
 
     // Tags
     Route::group(['prefix' => 'tags', 'as' => 'tags.'], function () {
@@ -47,6 +47,7 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
         Route::delete('/{tag_id}', [TagsController::class, 'destroy'])
             ->name('destroy');
     });
+
     // Profile
     Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/', [UserProfile::class, 'edit'])
@@ -55,6 +56,7 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
         Route::put('/', [UserProfile::class, 'update'])
             ->name('update');
     });
+
     // Answers
     Route::group(['prefix' => 'answers', 'as' => 'answers.'], function () {
 
@@ -71,8 +73,10 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
             ->name('destroy');
 
     });
+
     // Questions
     Route::resource('questions', QuestionsController::class);
+
     // Notifications
     Route::get('/notifications', [NotificationsController::class, 'index'])
         ->name('notifications.index');
