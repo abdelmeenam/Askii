@@ -22,12 +22,18 @@
     "Tags": "الكلمات الدلالية",
     "These credentials do not match our records.": "بيانات الدخول خاطئة.",
     "New Answer": "إجابة جديدة",
-    ":user added answer to your question \":question\"": "قام :user بالإجابة على سؤالك \":question\"",
     "View Answer": "عرض الإجابة",
+    "Hello :name": "مرحبا :name",
+    "New Answer From :user On \":question\"": "إجابة جديدة من :user على سؤالك \":question\"",
+
+
+
+
     "Overview": "نظرة عامة",
     "Inventory": "المخزون",
     "Customers": "العملاء",
     "Products": "المنتجات",
-    "Language": "اللغات"
+    "Language": "اللغات",
+    "Notifications": "الإشعارات"
 
 }

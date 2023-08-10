@@ -39,12 +39,10 @@ class NewAnswerNotification extends Notification
     public function via($notifiable)
     {
         $channels = ['database'];
-//        if (in_array('mail' , $notifiable->notification_options)) {
-//            $channels[] = 'mail';
-//        }
-//        if (in_array('nexmo' , $notifiable->notification_options)) {
-//           $channels[] = 'nexmo';
-//        }
+        if (in_array('mail' , $notifiable->notification_options)) {
+            $channels[] = 'mail';
+        }
+
         return $channels;
     }
 
@@ -57,9 +55,15 @@ class NewAnswerNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject(__('New Answer'))
+                    ->from('notify@stackOverFlow.com')
+                    ->greeting(__("Hello :name" , ['name'=>$notifiable->name]))
+                    ->line(__('New Answer From :user On ":question"'  ,[
+                        'user'=>$this->user->name,
+                        'question'=>$this->question->title])
+                        )
+                    ->action(__('View Answer'), url(route('questions.show' , $this->question->id)))
+                    ->line(__('Thank you for using our application!'));
     }
 
     /** Get the database representation of the notification.
@@ -71,12 +75,11 @@ class NewAnswerNotification extends Notification
     {
         return [
             'title'=> __('New Answer'),
-            'body'=>__('New Answer From :user On :question'  ,[
+            'body'=>__('New Answer From :user On ":question"'  ,[
                 'user'=>$this->user->name,
                 'question'=>$this->question->title]),
             'image'=>'https://via.placeholder.com/100',
             'url'=>route('questions.show' , $this->question->id)
-
         ];
     }
 

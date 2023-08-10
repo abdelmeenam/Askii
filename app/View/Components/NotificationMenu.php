@@ -17,7 +17,7 @@ class NotificationMenu extends Component
     public function __construct()
     {
         $user = auth()->user();
-        $notifications = $user->notifications()->take(5)->get();
+        $notifications = $user->notifications()->take(3)->get();
 
         $this->notifications = $notifications;
         $this->unreadNotificationsCount = $user->unreadNotifications->count();

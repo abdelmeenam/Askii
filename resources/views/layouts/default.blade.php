@@ -56,7 +56,9 @@
             </div>
 
             <!-- Notification -->
-            <x-notification-menu></x-notification-menu>
+            <x-notification-menu>
+
+            </x-notification-menu>
 
             <!-- User -->
             <div class="dropdown text-end">

@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail , HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -61,5 +64,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class)
             ->withDefault();
+    }
+
+    // prefered language
+    public function preferredLocale(): string
+    {
+        //return $this->profile->preferred_lang ;
+        return 'en';
     }
 }
