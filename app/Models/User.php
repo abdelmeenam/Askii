@@ -72,4 +72,8 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         //return $this->profile->preferred_lang ;
         return 'en';
     }
+    public function routeNotificationForVonage($notification)
+    {
+        return $this->mobile_number;
+    }
 }

@@ -7,7 +7,9 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
+
 
 class NewAnswerNotification extends Notification
 {
@@ -40,10 +42,13 @@ class NewAnswerNotification extends Notification
     {
         $channels = ['database'];
         if (in_array('mail' , $notifiable->notification_options)) {
-            $channels[] = 'mail';
+            //$channels[] = 'mail';
+        }
+        if (in_array('sms' , $notifiable->notification_options)) {
+           // $channels[] = 'vonage';
         }
 
-        return $channels;
+       return $channels;
     }
 
     /**
@@ -81,6 +86,22 @@ class NewAnswerNotification extends Notification
             'image'=>'https://via.placeholder.com/100',
             'url'=>route('questions.show' , $this->question->id)
         ];
+    }
+
+
+    /**
+     * Get the Vonage / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\VonageMessage
+     */
+    public function toVonage($notifiable)
+    {
+        return (new VonageMessage)
+            ->content(__('New Answer From :user On your question'  ,['user'=>$this->user->name]))
+            ->from('15554443333')
+            ->unicode();
+
     }
 
 
