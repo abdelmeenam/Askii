@@ -25,10 +25,10 @@ Route::get('/dashboard', function () {
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
+Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
 
     // Tags
-    Route::group(['prefix' => 'tags', 'as' => 'tags.'], function () {
+    Route::group(['middleware'=>'auth' , 'prefix' => 'tags', 'as' => 'tags.'], function () {
         Route::get('', [TagsController::class, 'index'])
             ->name('index');
 
@@ -49,7 +49,7 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
     });
 
     // Profile
-    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+    Route::group(['middleware'=>'auth' ,'prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/', [UserProfile::class, 'edit'])
             ->name('edit');
 
@@ -58,7 +58,7 @@ Route::group(['middleware'=>['auth' ,  'localeSessionRedirect', 'localizationRed
     });
 
     // Answers
-    Route::group(['prefix' => 'answers', 'as' => 'answers.'], function () {
+    Route::group(['middleware'=>'auth' ,'prefix' => 'answers', 'as' => 'answers.'], function () {
 
         Route::put('/{id}/best', [AnswersController::class, 'bestAnswer'])
             ->name('best');

@@ -55,13 +55,13 @@
                 </ul>
             </div>
 
-            <!-- Notification -->
-            <x-notification-menu>
-
-            </x-notification-menu>
-
+            @auth
+                <!-- Notification -->
+                <x-notification-menu>
+                </x-notification-menu>
+            @endauth
             <!-- User -->
-            <div class="dropdown text-end">
+            <div class="dropdown text-end m-2">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
@@ -88,6 +88,10 @@
 </div>
 
 <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script>
+    const userId="{{Auth::id()}}"
+</script>
+@vite(['resources/js/app.js'])
 @stack('scripts')
 </body>
 </html>

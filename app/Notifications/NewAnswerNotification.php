@@ -40,7 +40,7 @@ class NewAnswerNotification extends Notification
     // Channels : mail, database, broadcast(real time), nexmo(sms), slack, and custom channels
     public function via($notifiable)
     {
-        $channels = ['database'];
+        $channels = ['database' , 'broadcast'];
         if (in_array('mail' , $notifiable->notification_options)) {
             //$channels[] = 'mail';
         }
@@ -115,6 +115,18 @@ class NewAnswerNotification extends Notification
     {
         return [
             //
+        ];
+    }
+
+    public function toBroadcast($notifiable)
+    {
+        return [
+            'title'=> __('New Answer'),
+            'body'=>__('New Answer From :user On ":question"'  ,[
+                'user'=>$this->user->name,
+                'question'=>$this->question->title]),
+            'image'=>'https://via.placeholder.com/100',
+            'url'=>route('questions.show' , $this->question->id)
         ];
     }
 }
