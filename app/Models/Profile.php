@@ -18,7 +18,6 @@ class Profile extends Model
         'date_of_birth',
         'city',
         'country',
-        'profile_photo',
     ];
 
     // Primary key

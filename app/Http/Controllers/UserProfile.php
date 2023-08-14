@@ -23,7 +23,6 @@ class UserProfile extends Controller
     {
         $user = auth()->user();
         $this->validate($request, [
-            'name' => ['required' , 'string' ],
             'first_name' => ['required' , 'string' , 'max:255'],
             'last_name' => ['required' , 'string' , 'max:255'],
             'phone_number' => ['required' , 'string' , 'max:255'],
@@ -36,7 +35,7 @@ class UserProfile extends Controller
 
         //upload image
         $previousProfilePhoto = $user->profile_photo;
-        $data = $request->except('image');
+        $data = $request->except('profile_photo');
         if($request->hasFile('profile_photo')){
             $file = $request->file('profile_photo');
             $path = $file->store('uploads' , ['disk' => 'public']);

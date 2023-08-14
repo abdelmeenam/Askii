@@ -76,4 +76,12 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
     {
         return $this->mobile_number;
     }
+
+    public function getPhotoUrlAttribute()
+    {
+        if ($this->profile_photo) {
+            return asset('storage/' . $this->profile_photo);
+        }
+        return 'https://ui-avatars.com/api/?name=' .$this->name ;
+    }
 }

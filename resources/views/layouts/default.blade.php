@@ -26,10 +26,8 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">{{__('Overview')}}</a></li>
-                <li><a href="#" class="nav-link px-2 link-body-emphasis">{{__('Inventory')}}</a></li>
+                <li><a href="{{route('questions.index')}}" class="nav-link px-2 link-secondary">{{__('Questions')}}</a></li>
                 <li><a href="#" class="nav-link px-2 link-body-emphasis">{{__('Customers')}}</a></li>
-                <li><a href="#" class="nav-link px-2 link-body-emphasis">{{__('Products')}}</a></li>
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"   method ="get" action="{{route('questions.index')}}" >
@@ -59,19 +57,30 @@
                 <!-- Notification -->
                 <x-notification-menu>
                 </x-notification-menu>
-            @endauth
+
             <!-- User -->
             <div class="dropdown text-end m-2">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    <img src="{{Auth::user()->PhotoUrl}}" width="32" height="32" class="rounded-circle">
                 </a>
-                <ul class="dropdown-menu text-small">
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider">Profille</li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ route('password.edit') }}">Change password</a></li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" onclick="document.getElementById('logout').submit()" href="javascript:;">Sign out</a></li>
+                    <form action="{{ route('logout') }}" method="post" id="logout" style="display: none;">
+                        @csrf
+                    </form>
                 </ul>
             </div>
+            @else
+                <a href="{{route('login')}}" class="btn btn-outline-primary me-2">{{__('Login')}}</a>
+                <a href="{{route('register')}}" class="btn btn-primary">{{__('Sign-up')}}</a>
+            @endauth
+
 
         </div>
     </div>
@@ -84,6 +93,21 @@
         <hr>
     </header>
     @yield('content')
+
+
+    <!-- Notification Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="" class="rounded me-2" alt="...">
+                <strong class="me-auto" id="notification-title"></strong>
+                <small id="notification-time"></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="notification-body">
+            </div>
+        </div>
+    </div>
 
 </div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('name' ,'Edit Profile')
+@section('title' ,'Edit Profile')
 
 @section('content')
 
@@ -15,7 +15,7 @@
 
         <!-- profile photo -->
         <div class="col-md-3">
-            <img src="{{asset('storage/'.$user->profile_photo)}}" class="img-fluid" alt="{{ $user->name }}">
+            <img src="{{Auth::user()->PhotoUrl}}" class="img-fluid" alt="{{ $user->name }}">
         </div>
 
         <!-- profile form -->
@@ -23,17 +23,6 @@
             <form action="{{route('profile.update')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-
-                <!--name input-->
-                <div class="form-group mb-3">
-                    <label for="name">{{__('Name')}}</label>
-                    <div>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"  name="name" value="{{old('name' , $user->name)}}">
-                        @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
 
                 <!--first name input-->
                 <div class="form-group mb-3">
