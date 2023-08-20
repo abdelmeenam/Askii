@@ -19,11 +19,7 @@ class QuestionsController extends Controller
         $this->middleware('auth')->except(['index' , 'show']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $searchTerm = trim(request('search'));
@@ -52,11 +48,7 @@ class QuestionsController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         // ALl tags
@@ -67,12 +59,7 @@ class QuestionsController extends Controller
             ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $request->validate([

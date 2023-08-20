@@ -42,7 +42,7 @@ class UserProfile extends Controller
             $data['profile_photo'] = $path;
         }
 
-        $request->merge(['name' => $request->first_name . ' ' . $request->last_name]);
+        $data['name'] = $request->first_name . ' ' . $request->last_name;
         $user->update($data);
         $user->profile()->updateOrCreate(['user_id' => $user->id] , $request->all());
 
