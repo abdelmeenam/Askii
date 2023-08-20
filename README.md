@@ -20,6 +20,7 @@ https://github.com/abdelmeenam/stackoverflow-clone.git
 composer install
 npm install
 npm run build
+php artisan db:link
 ```
 3- Create a copy of your .env file
 ```bash
