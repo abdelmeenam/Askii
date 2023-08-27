@@ -28,6 +28,15 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
     ];
 
     /**
+     * The attributes that should be appended to serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'photo_url'     //getPhotoUrlAttribute()
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -35,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
     protected $hidden = [
         'password',
         'remember_token',
+        'profile_photo',
     ];
 
     /**

@@ -24,7 +24,7 @@ class NewAnswerNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Question $question , User $user)
+    public function __construct(Question $question, User $user)
     {
         $this->question = $question;
         $this->user = $user;
@@ -40,15 +40,15 @@ class NewAnswerNotification extends Notification
     // Channels : mail, database, broadcast(real time), nexmo(sms), slack, and custom channels
     public function via($notifiable)
     {
-        $channels = ['database' , 'broadcast'];
-        if (in_array('mail' , $notifiable->notification_options)) {
-            //$channels[] = 'mail';
-        }
-        if (in_array('sms' , $notifiable->notification_options)) {
-           // $channels[] = 'vonage';
-        }
+        $channels = ['database', 'broadcast'];
+        // if (in_array('mail' , $notifiable->notification_options)) {
+        //     //$channels[] = 'mail';
+        // }
+        // if (in_array('sms' , $notifiable->notification_options)) {
+        //    // $channels[] = 'vonage';
+        // }
 
-       return $channels;
+        return $channels;
     }
 
     /**
@@ -60,15 +60,17 @@ class NewAnswerNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject(__('New Answer'))
-                    ->from('notify@stackOverFlow.com')
-                    ->greeting(__("Hello :name" , ['name'=>$notifiable->name]))
-                    ->line(__('New Answer From :user On ":question"'  ,[
-                        'user'=>$this->user->name,
-                        'question'=>$this->question->title])
-                        )
-                    ->action(__('View Answer'), url(route('questions.show' , $this->question->id)))
-                    ->line(__('Thank you for using our application!'));
+            ->subject(__('New Answer'))
+            ->from('notify@stackOverFlow.com')
+            ->greeting(__("Hello :name", ['name' => $notifiable->name]))
+            ->line(
+                __('New Answer From :user On ":question"', [
+                    'user' => $this->user->name,
+                    'question' => $this->question->title
+                ])
+            )
+            ->action(__('View Answer'), url(route('questions.show', $this->question->id)))
+            ->line(__('Thank you for using our application!'));
     }
 
     /** Get the database representation of the notification.
@@ -79,12 +81,13 @@ class NewAnswerNotification extends Notification
     public function toDatabase()
     {
         return [
-            'title'=> __('New Answer'),
-            'body'=>__('New Answer From :user On ":question"'  ,[
-                'user'=>$this->user->name,
-                'question'=>$this->question->title]),
-            'image'=>'https://via.placeholder.com/100',
-            'url'=>route('questions.show' , $this->question->id)
+            'title' => __('New Answer'),
+            'body' => __('New Answer From :user On ":question"', [
+                'user' => $this->user->name,
+                'question' => $this->question->title
+            ]),
+            'image' => 'https://via.placeholder.com/100',
+            'url' => route('questions.show', $this->question->id)
         ];
     }
 
@@ -98,10 +101,9 @@ class NewAnswerNotification extends Notification
     public function toVonage($notifiable)
     {
         return (new VonageMessage)
-            ->content(__('New Answer From :user On your question'  ,['user'=>$this->user->name]))
+            ->content(__('New Answer From :user On your question', ['user' => $this->user->name]))
             ->from('15554443333')
             ->unicode();
-
     }
 
 
@@ -121,12 +123,13 @@ class NewAnswerNotification extends Notification
     public function toBroadcast($notifiable)
     {
         return [
-            'title'=> __('New Answer'),
-            'body'=>__('New Answer From :user On ":question"'  ,[
-                'user'=>$this->user->name,
-                'question'=>$this->question->title]),
-            'image'=>'https://via.placeholder.com/100',
-            'url'=>route('questions.show' , $this->question->id)
+            'title' => __('New Answer'),
+            'body' => __('New Answer From :user On ":question"', [
+                'user' => $this->user->name,
+                'question' => $this->question->title
+            ]),
+            'image' => $this->user->getPhotoUrlAttribute(),
+            'url' => route('questions.show', $this->question->id)
         ];
     }
 }

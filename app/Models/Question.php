@@ -17,6 +17,10 @@ class Question extends Model
         'user_id',
     ];
 
+    protected $hidden = [
+        'updated_at',
+    ];
+
     //relationship  with answer
     public function answers()
     {

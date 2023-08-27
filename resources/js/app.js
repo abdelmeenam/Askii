@@ -6,6 +6,24 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+
+// get time ago
+function timeAgo() {
+    let date = new Date();
+    date.toLocaleString('en-US', { timeZone: 'Africa/Cairo' });
+    let dayOfWeek = date.toLocaleString('en-US', { weekday: 'short' });
+    let month = date.toLocaleString('en-US', { month: 'short' });
+    let day = date.getDate();
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Map 0 to 12 for midnight
+    let formattedDate = `${dayOfWeek} ${month} ${day} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+    return formattedDate;
+}
+
 window.Echo.private('App.Models.User.' + userId)
     .notification(function (notification) {
         //alert(notification.body)
@@ -13,8 +31,10 @@ window.Echo.private('App.Models.User.' + userId)
         var toast = new bootstrap.Toast(notificationToast)
         document.getElementById('notification-body').innerHTML = notification.body
         document.getElementById('notification-title').innerHTML = notification.title
-        document.getElementById('notification-time').innerHTML = new Date()
+        document.getElementById("notification-image").src = notification.image
+        document.getElementById('notification-time').innerHTML = timeAgo()
         toast.show()
+        console.log(notification)
 
         const countElement = document.getElementById('nm-count')
         let count = Number(countElement.innerText)

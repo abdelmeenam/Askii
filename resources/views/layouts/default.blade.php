@@ -27,7 +27,9 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{route('questions.index')}}" class="nav-link px-2 link-secondary">{{__('Questions')}}</a></li>
-                <li><a href="#" class="nav-link px-2 link-body-emphasis">{{__('Customers')}}</a></li>
+                @auth
+                    <li><a href="{{route('notifications.index')}}" class="nav-link px-2 link-body-emphasis">{{__('Notifications')}}</a></li>
+                @endauth
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"   method ="get" action="{{route('questions.index')}}" >
@@ -99,8 +101,8 @@
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <img src="" class="rounded me-2" alt="...">
-                <strong class="me-auto" id="notification-title"></strong>
+                <img src=""  id="notification-image"  style="width: 50px; height: 50px" class="rounded me-2" alt="">
+                <strong class="me-auto"  id="notification-title"></strong>
                 <small id="notification-time"></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
