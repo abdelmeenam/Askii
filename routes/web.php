@@ -7,18 +7,17 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfile;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\RolesController;
+
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
-Route::get('/', function () {
-    return redirect()->route('questions.index');
-});
 
 Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
 
     // Tags
-    Route::group(['middleware'=>'auth' , 'prefix' => 'tags', 'as' => 'tags.'], function () {
+    Route::group(['middleware'=>['auth' ,'checkUserType:admin,super-admin'] , 'prefix' => 'tags', 'as' => 'tags.'], function () {
         Route::get('', [TagsController::class, 'index'])
             ->name('index');
 
@@ -37,16 +36,19 @@ Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'l
         Route::delete('/{tag_id}', [TagsController::class, 'destroy'])
             ->name('destroy');
     });
+
     // Profile
     Route::group(['middleware'=>'auth' ,'prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/', [UserProfile::class, 'edit'])->name('edit');
         Route::put('/', [UserProfile::class, 'update'])->name('update');
     });
+
     // Change password
     Route::group(['middleware'=>'auth' ,'prefix' => 'password', 'as' => 'password.'], function () {
         Route::get('/change', [ChangePasswordController::class, 'edit'])->name('edit');
         Route::post('/', [ChangePasswordController::class, 'update'])->name('update');
     });
+
     // Answers
     Route::group(['middleware'=>'auth' ,'prefix' => 'answers', 'as' => 'answers.'], function () {
 
@@ -63,12 +65,19 @@ Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'l
             ->name('destroy');
 
     });
+
     // Questions
     Route::resource('questions', QuestionsController::class);
-    // Notifications
-    Route::get('/notifications', [NotificationsController::class, 'index'])
-        ->name('notifications.index')->middleware('auth');
 
+    // Roles
+    Route::resource('roles', RolesController::class);
+
+    // Notifications
+    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index')->middleware('auth');
+});
+
+Route::get('/', function () {
+    return redirect()->route('questions.index');
 });
 
 

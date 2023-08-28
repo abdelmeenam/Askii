@@ -10,6 +10,12 @@
 @endif
 
 
+@if(session()->has('success'))
+    <div class="alert alert-success">
+        {{ session()->get('success') }}
+    </div>
+@endif
+
 <form action="{{ $action }}" method="post">
     @csrf
     @if($method == 'PUT')

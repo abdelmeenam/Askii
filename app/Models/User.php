@@ -87,6 +87,19 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         return $this->mobile_number;
     }
 
+    //relationship with role
+    public function roles()
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'role_user',
+            'user_id',
+            'role_id',
+            'id',
+            'id'
+        );
+    }
+
     public function getPhotoUrlAttribute()
     {
         if ($this->profile_photo) {
