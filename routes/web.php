@@ -8,6 +8,7 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfile;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UsersController;
 
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -71,6 +72,9 @@ Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'l
 
     // Roles
     Route::resource('roles', RolesController::class);
+
+    // Users
+    Route::resource('users', UsersController::class);
 
     // Notifications
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index')->middleware('auth');

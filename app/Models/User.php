@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         'email',
         'password',
         'profile_photo',
+        'type'
     ];
 
     /**
