@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Gate;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth' ,'checkUserType:admin,super-admin']);
+    }
+
     // show all users with their roles
     public function index()
     {
