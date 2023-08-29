@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    Tags List
+    Users List
     <a href="{{route('roles.create')}}" class="btn btn-outline-dark btn-xs">Create New Role</a>
 @endsection
 

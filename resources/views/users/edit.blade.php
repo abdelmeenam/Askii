@@ -4,10 +4,10 @@
 
 @section('content')
 
-    @include('roles._form' , [
-        'action' => route('roles.update' , $role->id),
+    @include('users._form' , [
+        'action' => route('users.update' , $user->id),
         'method' => 'PUT',
-        'tag' => $role
+        'roles' => $roles,
     ])
 
 @endsection

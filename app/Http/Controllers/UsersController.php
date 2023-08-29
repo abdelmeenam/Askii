@@ -51,7 +51,7 @@ class UsersController extends Controller
         DB::beginTransaction();
         try{
             $user->update($request->only('type'));
-            $user->roles()->sync($request->roles);
+            $user->roles()->attach($request->roles);
             DB::commit();
         }catch (\Throwable $e){
             DB::rollback();
@@ -69,4 +69,35 @@ class UsersController extends Controller
             'roles' => Role::all()
         ]);
     }
+
+    // update user role
+    public function update(Request $request, User $user)
+    {
+        //Gate::authorize('users.edit');
+        $request->validate([
+            'type' => 'required',
+            'roles' => 'required|array',
+        ]);
+
+        // DB Transaction
+        DB::beginTransaction();
+        try{
+            $user->update($request->only('type'));
+            $user->roles()->sync($request->roles);
+            DB::commit();
+        }catch (\Throwable $e){
+            DB::rollback();
+            throw $e;
+        }
+        return redirect()->route('users.index')->with('success' , 'User updated successfully');
+    }
+
+    // delete user role
+    public function destroy(User $user)
+    {
+        //Gate::authorize('users.delete');
+        $user->delete();
+        return redirect()->route('users.index')->with('success' , 'User deleted successfully');
+    }
+
 }
