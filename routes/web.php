@@ -9,6 +9,8 @@ use App\Http\Controllers\UserProfile;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\DashboardController;
+
 
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -85,10 +87,7 @@ Route::get('/', function () {
 });
 
 //dashboard
-Route::get('/dashboard', function () {
-    return view('');
-})->middleware(['auth'])->name('dashboard');
-
+Route::get('/dashboard' , [DashboardController::class , 'index'])->name('dashboard');
 
 
 
