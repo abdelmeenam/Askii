@@ -9,6 +9,12 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class TagPolicy
 {
     use HandlesAuthorization;
+    public function before(User $user)
+    {
+        if ($user->type == 'super-admin'){
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
