@@ -11,10 +11,16 @@ use Illuminate\Support\Str;
 
 class TagsController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Tag::class, 'tag');
+    }
+
     public function index()
     {
         //Gate::authorize('tags.view');
-        $this->authorize('viewAny' ,Tag::class);
+        //$this->authorize('viewAny' ,Tag::class);
+
         $tags = Tag::Paginate();
         return view('tags.index', compact('tags'));
     }
@@ -22,14 +28,16 @@ class TagsController extends Controller
     public function create()
     {
         //Gate::authorize('tags.create');
-        $this->authorize('create' ,Tag::class);
+        //$this->authorize('create' ,Tag::class);
+
         return view('tags.create' ,['tag' => new Tag()]);
     }
 
     public function store(CreateTagRequest $request)
     {
         //Gate::authorize('tags.create');
-        $this->authorize('create' ,Tag::class);
+        //$this->authorize('create' ,Tag::class);
+
         // Mass assignment method
         $tag = Tag::create([
             'name' => $request->name,
@@ -51,8 +59,8 @@ class TagsController extends Controller
     public function update(UpdateTagRequest $request, $id)
     {
         //Gate::authorize('tags.edit');
-        $this->authorize('update' ,Tag::class);
-        // Mass assignment method
+        //$this->authorize('update' ,Tag::class);
+
         $tag = Tag::findorFail($id);
         $tag->update([
             'name' => $request->name,
@@ -64,7 +72,7 @@ class TagsController extends Controller
     public function destroy($id)
     {
         //Gate::authorize('tags.delete');
-        $this->authorize('delete' ,Tag::class);
+        //$this->authorize('delete' ,Tag::class);
 
         $tag = Tag::findorFail($id);
         $tag->delete();
