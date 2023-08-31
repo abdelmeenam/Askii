@@ -14,13 +14,13 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth' ,'checkUserType:admin,super-admin']);
+        $this->middleware(['auth' ,'checkUserType:super-admin']);
     }
 
     // show all users with their roles
     public function index()
     {
-        //Gate::authorize('users.view');
+        Gate::authorize('users.view');
         $users = User::with('roles')
             ->whereIn('type',['admin' , 'super-admin'])
             ->paginate(8);
@@ -30,7 +30,7 @@ class UsersController extends Controller
     // create user role
     public function create()
     {
-        //Gate::authorize('users.create');
+        Gate::authorize('users.create');
         return view('users.create' , [
             'user' => new User(),
             'roles' => Role::all()
@@ -40,7 +40,7 @@ class UsersController extends Controller
     // store user role
     public function store(Request $request)
     {
-        //Gate::authorize('users.create');
+        Gate::authorize('users.create');
         //conn.miracle@example.net
         $request->validate([
             'email' => 'required|email|exists:users,email',
@@ -69,7 +69,7 @@ class UsersController extends Controller
     // edit user role
     public function edit(User $user)
     {
-        //Gate::authorize('users.edit');
+        Gate::authorize('users.edit');
         return view('users.edit' , [
             'user' => $user,
             'roles' => Role::all()
@@ -79,7 +79,7 @@ class UsersController extends Controller
     // update user role
     public function update(Request $request, User $user)
     {
-        //Gate::authorize('users.edit');
+        Gate::authorize('users.edit');
         $request->validate([
             'type' => 'required',
             'roles' => 'required|array',
@@ -101,7 +101,7 @@ class UsersController extends Controller
     // delete user role
     public function destroy(User $user)
     {
-        //Gate::authorize('users.delete');
+        Gate::authorize('users.delete');
         $user->delete();
         return redirect()->route('users.index')->with('success' , 'User deleted successfully');
     }

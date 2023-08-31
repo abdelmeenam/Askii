@@ -108,4 +108,13 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         }
         return 'https://ui-avatars.com/api/?name=' .$this->name ;
     }
+
+    public function hasAbility($ability){
+        foreach ($this->roles as $role) {
+            if (in_array($ability, $role->abilities)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

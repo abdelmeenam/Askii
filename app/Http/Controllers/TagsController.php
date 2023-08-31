@@ -13,20 +13,23 @@ class TagsController extends Controller
 {
     public function index()
     {
-        Gate::authorize('tags.view');
+        //Gate::authorize('tags.view');
+        $this->authorize('viewAny' ,Tag::class);
         $tags = Tag::Paginate();
         return view('tags.index', compact('tags'));
     }
 
     public function create()
     {
-        Gate::authorize('tags.create');
+        //Gate::authorize('tags.create');
+        $this->authorize('create' ,Tag::class);
         return view('tags.create' ,['tag' => new Tag()]);
     }
 
     public function store(CreateTagRequest $request)
     {
-        Gate::authorize('tags.create');
+        //Gate::authorize('tags.create');
+        $this->authorize('create' ,Tag::class);
         // Mass assignment method
         $tag = Tag::create([
             'name' => $request->name,
@@ -39,14 +42,16 @@ class TagsController extends Controller
 
     public function edit($id)
     {
-        Gate::authorize('tags.edit');
+        //Gate::authorize('tags.edit');
+        $this->authorize('update' ,Tag::class);
         $tag = Tag::findorFail($id);
         return view('tags.edit', compact('tag'));
     }
 
     public function update(UpdateTagRequest $request, $id)
     {
-        Gate::authorize('tags.edit');
+        //Gate::authorize('tags.edit');
+        $this->authorize('update' ,Tag::class);
         // Mass assignment method
         $tag = Tag::findorFail($id);
         $tag->update([
@@ -58,7 +63,9 @@ class TagsController extends Controller
 
     public function destroy($id)
     {
-        Gate::authorize('tags.delete');
+        //Gate::authorize('tags.delete');
+        $this->authorize('delete' ,Tag::class);
+
         $tag = Tag::findorFail($id);
         $tag->delete();
         return redirect()->route('tags.index')->with('success', 'Tag deleted successfully');

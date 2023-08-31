@@ -32,21 +32,16 @@ class AuthServiceProvider extends ServiceProvider
 
 
         Gate::before(function (User $user , $ability){
-           return $user->type == 'super-admin' ??  true;
+            if ($user->type == 'super-admin'){
+                return true;
+            }
         });
 
         foreach (config('abilities') as $code => $label){
             Gate::define($code, function (User $user ) use ($code) {
-                foreach ($user->roles as $role) {
-                    if (in_array($code, $role->abilities)) {
-                        return true;
-                    }
-                }
-                return false;
+                return $user->hasAbility($code);
             });
         }
-
-
 
     }
 }
