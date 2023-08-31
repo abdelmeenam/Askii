@@ -22,6 +22,7 @@ class QuestionsController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny' , Question::class);
         $searchTerm = trim(request('search'));
         $tag_id = request('tag_id');
 
@@ -51,6 +52,7 @@ class QuestionsController extends Controller
 
     public function create()
     {
+        $this->authorize('create' , Question::class);
         // ALl tags
         $tags = Tag::all();
         return view('questions.create' , [
@@ -62,6 +64,7 @@ class QuestionsController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create' , Question::class);
         $request->validate([
             'title' => ['required' , 'string' , 'max:255'],
             'description' => ['required' , 'string' ],
@@ -98,6 +101,9 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
+
+        $this->authorize('view' , Question::class);
+
         $question = Question::findOrfail($id);
         $questionsCount = $question->answers->count();          //->withCount('answers')
         $answers = $question->answers()->with('user')->get();
@@ -119,6 +125,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::findOrFail($id);
+        $this->authorize('update' , $question);
 
         // Tags
         $tags = Tag::all();
@@ -146,13 +153,15 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $question = Question::findOrFail($id);
+        $this->authorize('update' , $question);
+
         $request->validate([
             'title' => ['required' , 'string' , 'max:255'],
             'description' => ['required' , 'string' ],
             'status' => ['in:open,closed'],
             'tags' => ['required' , 'array' , 'exists:tags,id'],
         ]);
-        $question = Question::findOrFail($id);
 
         // DB Transaction
         DB::beginTransaction();
@@ -176,6 +185,9 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
+        $question = Question::findOrFail($id);
+        $this->authorize('delete' , $question);
+
         Question::destroy($id);
         return redirect()->route('questions.index')
             ->with('success', 'Question deleted successfully.');
