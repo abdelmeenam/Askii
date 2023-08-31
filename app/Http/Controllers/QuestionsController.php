@@ -22,7 +22,6 @@ class QuestionsController extends Controller
 
     public function index()
     {
-        $this->authorize('viewAny' , Question::class);
         $searchTerm = trim(request('search'));
         $tag_id = request('tag_id');
 
@@ -101,9 +100,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-
-        $this->authorize('view' , Question::class);
-
+        
         $question = Question::findOrfail($id);
         $questionsCount = $question->answers->count();          //->withCount('answers')
         $answers = $question->answers()->with('user')->get();

@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            @if(Auth::id() == $question->user_id)
+            @can('update' , $question)
                 <div class="card-footer">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -47,7 +47,8 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endcan
+
         </div>
     @endforeach
 
