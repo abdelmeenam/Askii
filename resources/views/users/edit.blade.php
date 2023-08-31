@@ -1,8 +1,13 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title' , 'Edit Role')
+    <x-slot name="title">
+        Edit User
+    </x-slot>
 
-@section('content')
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">edit user</li>
+    </x-slot>
+
 
     @include('users._form' , [
         'action' => route('users.update' , $user->id),
@@ -10,4 +15,5 @@
         'roles' => $roles,
     ])
 
-@endsection
+
+    </x-dashboard-layout>

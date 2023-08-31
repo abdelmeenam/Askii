@@ -1,16 +1,19 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title')
-    Users List
-    <a href="{{route('roles.create')}}" class="btn btn-outline-dark btn-xs">Create New Role</a>
-@endsection
+    <x-slot name="title">
+        Create Role
+    </x-slot>
 
-@section('content')
 
-    @if(session()->has('success'))
-        <div class="alert alert-success">{{ session()->get('success') }}</div>
-    @endif
 
+    <x-slot name="title">
+        Create Role
+        <a href="{{route('roles.create')}}" class="btn btn-outline-dark btn-xs">Create New Role</a>
+    </x-slot>
+
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">Create Role</li>
+    </x-slot>
 
 
     <table class="table">
@@ -53,4 +56,4 @@
     </script>
 
 
-@endsection
+</x-dashboard-layout>

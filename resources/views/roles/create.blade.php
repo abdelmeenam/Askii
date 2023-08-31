@@ -1,12 +1,16 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title' , 'Create ROle')
+    <x-slot name="title">
+        Create Role
+    </x-slot>
 
-@section('content')
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">Create Tag</li>
+    </x-slot>
 
     @include('roles._form' , [
         'action' => route('roles.store'),
         'method' => 'POST' ,
     ])
 
-@endsection
+</x-dashboard-layout>

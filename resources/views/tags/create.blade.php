@@ -8,8 +8,6 @@
         <li class="breadcrumb-item active">Create Tag</li>
     </x-slot>
 
-@section('content')
-
     @include('tags._form' , [
         'action' => route('tags.store'),
         'method' => 'POST'

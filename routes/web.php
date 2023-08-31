@@ -84,6 +84,10 @@ Route::get('/', function () {
     return redirect()->route('questions.index');
 });
 
+//dashboard
+Route::get('/dashboard', function () {
+    return view('');
+})->middleware(['auth'])->name('dashboard');
 
 
 

@@ -1,15 +1,13 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title')
+<x-slot name="title">
     Users List
     <a href="{{route('users.create')}}" class="btn btn-outline-dark btn-xs">Create New Admin</a>
-@endsection
+</x-slot>
 
-@section('content')
-
-    @if(session()->has('success'))
-        <div class="alert alert-success">{{ session()->get('success') }}</div>
-    @endif
+<x-slot name="breadcrumb">
+    <li class="breadcrumb-item active">users List</li>
+</x-slot>
 
 
     <table class="table">
@@ -59,4 +57,4 @@
     </script>
 
 
-@endsection
+</x-dashboard-layout>

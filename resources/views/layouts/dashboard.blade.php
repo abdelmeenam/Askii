@@ -189,7 +189,7 @@
                 </div>
             </div>
 
-{{--            <x-nav-menu />--}}
+            <x-nav-menu />
         </div>
         <!-- /.sidebar -->
     </aside>
