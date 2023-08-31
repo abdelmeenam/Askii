@@ -11,7 +11,7 @@ class TagPolicy
     use HandlesAuthorization;
     public function before(User $user)
     {
-        if ($user->type == 'super-admin'){
+        if ($user->type == 'super-admin' || $user->type == 'admin'){
             return true;
         }
     }

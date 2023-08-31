@@ -1,16 +1,15 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title')
-    Tags List
-    <a href="{{route('tags.create')}}" class="btn btn-outline-dark btn-xs">Create New Tag</a>
-@endsection
 
-@section('content')
-    @if(session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
-        </div>
-    @endif
+    <x-slot name="title">
+        Tags List
+        <a href="{{route('tags.create')}}" class="btn btn-outline-dark btn-xs">Create New Tag</a>
+    </x-slot>
+
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">Tags List</li>
+    </x-slot>
+
 
     <table class="table">
         <thead>
@@ -44,7 +43,6 @@
             @endforeach
         </tbody>
     </table>
-
     <script>
         setTimeout(function() {
             document.querySelector('.alert').remove();
@@ -59,5 +57,4 @@
         })
     </script>
 
-
-@endsection
+</x-dashboard-layout>

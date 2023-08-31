@@ -1,8 +1,12 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title' , 'Edit Tag')
+    <x-slot name="title">
+        Edit Tag
+    </x-slot>
 
-@section('content')
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">Edit Tag</li>
+    </x-slot>
 
     @include('tags._form' , [
         'action' => route('tags.update' , $tag->id),
@@ -10,4 +14,4 @@
         'tag' => $tag
     ])
 
-@endsection
+</x-dashboard-layout>

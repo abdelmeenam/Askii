@@ -1,6 +1,12 @@
-@extends('layouts.default')
+<x-dashboard-layout>
 
-@section('title' , 'Create Tag')
+    <x-slot name="title">
+        Create Tag
+    </x-slot>
+
+    <x-slot name="breadcrumb">
+        <li class="breadcrumb-item active">Create Tag</li>
+    </x-slot>
 
 @section('content')
 
@@ -9,4 +15,4 @@
         'method' => 'POST'
     ])
 
-@endsection
+</x-dashboard-layout>
