@@ -71,7 +71,7 @@ class QuestionPolicy
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Question $question)
+    public function delete(User $user, Question $question): \Illuminate\Auth\Access\Response|bool
     {
         return $user->id == $question->user_id;
     }

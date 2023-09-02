@@ -45,7 +45,8 @@ class TagsController extends Controller
         ]);
 
         // PRG : Post Redirect Get
-        return redirect()->route('tags.index');
+        //return redirect()->route('tags.index');
+        return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
 
     public function edit($id)
@@ -66,7 +67,8 @@ class TagsController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name)
         ]);
-        return redirect()->route('tags.index');
+        //return redirect()->route('tags.index');
+        return redirect()->route('tags.index')->with('success', 'Tag updated successfully');
     }
 
     public function destroy($id)

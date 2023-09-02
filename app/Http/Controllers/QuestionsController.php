@@ -100,7 +100,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        
+
         $question = Question::findOrfail($id);
         $questionsCount = $question->answers->count();          //->withCount('answers')
         $answers = $question->answers()->with('user')->get();
@@ -127,12 +127,8 @@ class QuestionsController extends Controller
         // Tags
         $tags = Tag::all();
         $questionTags = $question->tags()->pluck('id')->toArray();
+
         //dd($tags , $questionTags);
-
-        if ( ! (auth()->user()->id == $question->user_id) ) {
-            abort(404);
-        }
-
         return view('questions.edit', [
             'question' => $question,
             'tags' => $tags,

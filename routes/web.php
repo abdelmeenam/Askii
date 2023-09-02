@@ -88,6 +88,11 @@ Route::get('/', function () {
 
 //dashboard
 Route::get('/dashboard' , [DashboardController::class , 'index'])->name('dashboard');
+Route::get('/dashboard/chart' , [DashboardController::class , 'getChartData'])->name('dashboard.chart');
+Route::get('/dashboard/chart/tags' , [DashboardController::class , 'getTagChartData'])->name('dashboard.chart.tags');
+
+
+
 
 
 
