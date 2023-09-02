@@ -88,12 +88,15 @@
     </div>
 </header>
 
-<div class="container py-5">
-    <header class="mb-4 bg-light">
-        <h2>
-            @yield('title' , 'page Title')</h2>
-        <hr>
-    </header>
+<div class="container py-5 ">
+    <div class="row">
+        <div class="col-md-12 ">
+            <h2>@yield('title' , 'page Title')</h2>
+            <hr>
+        </div>
+    </div>
+
+
     @yield('content')
 
 

@@ -2,7 +2,7 @@
 
 @section('title')
 {{__('Questions List')}}
-    <a href="{{route('questions.create')}}" class="btn btn-outline-primary btn-xs">{{__('Create Question')}}
+    <a href="{{route('questions.create')}}" class="btn btn-outline-primary ">{{__('Create Question')}}
     </a>
 @endsection
 
