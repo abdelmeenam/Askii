@@ -1,54 +1,34 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## A StackOverflow clone built with Laravel 9.x
+# StackOverflow Clone built with Laravel 9.x
+Welcome to our StackOverflow clone project built using Laravel! This project aims to provide a platform where users can ask questions, post answers, and engage in a community-driven knowledge-sharing experience, much like the popular StackOverflow platform.
+
+## Features
+
+- **User Authentication**: Users can register, login, and verify their email addresses to access the platform.
+- **Question Management**: Users can create questions with specific tags such as PHP, MySQL, etc. They can update or delete their own questions.
+- **Answering Questions**: Other users can answer questions, triggering email using MAILtrap, SMS using NEXMO, and real-time notifications using PUSHER  to the question owner. Question owners can mark a specific answer as the best answer.
+- **Multilanguage Support**: The website supports multiple languages including Arabic and English.
+- **Profile Management**: Users can edit their profile data, upload profile images, and change passwords.
+- **Search Functionality**: Users can search for questions using any keyword with live search functionality.
+- **Admin Dashboard**: Administrators have access to a dashboard to view statistics such as the number of users, questions, and answers. They can also view graphs showing the number of answers and questions per day, as well as a donut chart to determine the distribution of questions among different tags (e.g., PHP, MySQL).
 
 
 ## Installation
-1- Clone the repo
+Clone the repo & Install dependencies
 ```bash
 https://github.com/abdelmeenam/stackoverflow-clone.git
-```
-2- Install dependencies
-```bash
 composer install
 npm install
 npm run build
 php artisan storage:link
-```
-3- Create a copy of your .env file
-```bash
 cp .env.example .env
-```
-4- Generate an app encryption key
-```bash
 php artisan key:generate
+php artisan migrate
 ```
 
-## Configuration
-1- Open .env file and change the following:
-```bash
-DB_DATABASE=stackoverflow-db
-DB_USERNAME=root
-DB_PASSWORD=
-```
-2- Run php artisan migrate to migrate the database.
 
-3- Run php artisan serve to start the development server.
-
-4- You can now access the server at  http://localhost:8000
-
-## Usage
-
-## Testing
-
-## Contributing
     
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
