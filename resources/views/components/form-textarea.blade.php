@@ -1,6 +1,6 @@
 @props(['label', 'id', 'name', 'value' => ''])
 
-<label for="{{ $id }}">{{ $label }}</label>
+<label for="{{ $id }}">{{ __($label) }}</label>
 <div>
     <textarea id="{{ $id }}" name="{{ $name }}" {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>{{ old($name, $value) }}
     </textarea>

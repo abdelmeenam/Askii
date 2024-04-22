@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', 'Edit Profile')
+@section('title', __('Edit Profile'))
 
 @section('content')
 
@@ -32,7 +32,7 @@
                     <x-form-input type="password" name="password_confirmation" label="Confirm Password" />
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update Password</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Update Password') }}</button>
                 </div>
             </form>
         </div>

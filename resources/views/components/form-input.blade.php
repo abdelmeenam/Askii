@@ -1,6 +1,6 @@
 @props(['label', 'id', 'name', 'value' => '', 'type' => 'text'])
 
-<label for="{{ $id ?? '' }}">{{ $label }}</label>
+<label for="{{ $id ?? '' }}">{{ __($label) }}</label>
 <div>
     <input type="{{ $type }}" id="{{ $id ?? '' }}" name="{{ $name }}" value="{{ old($name, $value) }}" {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>
     @error($name)

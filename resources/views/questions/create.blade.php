@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title' ,'New Question')
+@section('title' ,__('New Question'))
 
 @section('content')
 
@@ -23,7 +23,7 @@
 
         <!-- Tags -->
         <div class="form-group mb-3">
-            <label for="description">Tags</label>
+            <label for="description">{{ __('Tags') }}</label>
             @foreach($tags as $tag)
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="tags[]" value="{{$tag->id}}" id="{{$tag->id}}">

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Middleware\Localization;
 use App\Models\Answer;
 use App\Models\Question;
@@ -16,7 +17,7 @@ class QuestionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index' , 'show']);
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
 
@@ -26,22 +27,27 @@ class QuestionsController extends Controller
         $tag_id = request('tag_id');
 
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
-       // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
+        // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
         // Eager loading
         $questions = Question::with(['user', 'tags'])
             ->withCount('answers')
             ->latest()
-            ->when($searchTerm , function ($query , $searchTerm){
-                $query->where('title' , 'like' , '%'.$searchTerm.'%')
-                    ->orWhere('description' , 'like' , '%'.$searchTerm.'%');
+            ->when($searchTerm, function ($query, $searchTerm) {
+                $query->where('title', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
             })
-            ->when($tag_id, function ($query , $tag_id){
+            ->when($tag_id, function ($query, $tag_id) {
                 //$query->whereRaw('questions.id IN (SELECT question_id FROM question_tag WHERE tag_id = ?)', [$tag_id]);
-                $query->whereHas('tags' , function ($query) use ($tag_id){
-                    $query->where('id' , $tag_id);
+                $query->whereHas('tags', function ($query) use ($tag_id) {
+                    $query->where('id', $tag_id);
                 });
             })
             ->paginate(7);
+
+        if (request()->expectsJson()) {
+            // If request expects JSON response (for autocomplete search), return search results only
+            return $questions->pluck('title', 'id');
+        }
 
         return view('questions.index', [
             'questions' => $questions,
@@ -51,30 +57,30 @@ class QuestionsController extends Controller
 
     public function create()
     {
-        $this->authorize('create' , Question::class);
+        $this->authorize('create', Question::class);
         // ALl tags
         $tags = Tag::all();
-        return view('questions.create' , [
+        return view('questions.create', [
             'question' => new Question(),
             'tags' => $tags,
-            ]);
+        ]);
     }
 
 
     public function store(Request $request)
     {
-        $this->authorize('create' , Question::class);
+        $this->authorize('create', Question::class);
         $request->validate([
-            'title' => ['required' , 'string' , 'max:255'],
-            'description' => ['required' , 'string' ],
-            'tags' => ['required' , 'array' , 'exists:tags,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'tags' => ['required', 'array', 'exists:tags,id'],
         ]);
 
         //dd($request->tags);
 
         // DB Transaction
         DB::beginTransaction();
-        try{
+        try {
             $question = Question::create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -83,7 +89,7 @@ class QuestionsController extends Controller
 
             $question->tags()->attach($request->tags);
             DB::commit();
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             DB::rollback();
             throw $e;
         }
@@ -122,7 +128,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('update' , $question);
+        $this->authorize('update', $question);
 
         // Tags
         $tags = Tag::all();
@@ -134,7 +140,6 @@ class QuestionsController extends Controller
             'tags' => $tags,
             'questionTags' => $questionTags,
         ]);
-
     }
 
     /**
@@ -147,22 +152,22 @@ class QuestionsController extends Controller
     public function update(Request $request, $id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('update' , $question);
+        $this->authorize('update', $question);
 
         $request->validate([
-            'title' => ['required' , 'string' , 'max:255'],
-            'description' => ['required' , 'string' ],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
             'status' => ['in:open,closed'],
-            'tags' => ['required' , 'array' , 'exists:tags,id'],
+            'tags' => ['required', 'array', 'exists:tags,id'],
         ]);
 
         // DB Transaction
         DB::beginTransaction();
-        try{
+        try {
             $question->update($request->all());
             $question->tags()->sync($request->tags);
             DB::commit();
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             DB::rollback();
             throw $e;
         }
@@ -179,12 +184,10 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('delete' , $question);
+        $this->authorize('delete', $question);
 
         Question::destroy($id);
         return redirect()->route('questions.index')
             ->with('success', 'Question deleted successfully.');
     }
-
-
 }

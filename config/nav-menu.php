@@ -1,26 +1,32 @@
 <?php
 
-return[
+use App\Models\Role;
+use App\Models\Tag;
+use App\Models\User;
+
+return [
     [
-        'title'=>'Dashboard',
-        'route'=>'dashboard',
-        'icon'=>'fas fa-tachometer-alt',
+        'title' => 'Dashboard',
+        'route' => 'dashboard',
+        'icon' => 'fas fa-tachometer-alt',
     ],
     [
-        'title'=>'Users',
-        'route'=>'users.index',
-        'icon'=>'fas fa-users',
+        'title' => 'Admins',
+        'route' => 'users.index',
+        'icon' => 'fas fa-users',
+        'ability' => ['view', User::class]
     ],
-  [
-      'title'=>'Tags',
-      'route'=>'tags.index',
-      'icon'=>'fas fa-tags',
-      'ability'=>['view' ,Tag::class]
-  ],
     [
-        'title'=>'Roles',
-        'route'=>'roles.index',
-        'icon'=>'fas fa-user-shield',
-        'ability'=>['view' ,Role::class]
+        'title' => 'Tags',
+        'route' => 'tags.index',
+        'icon' => 'fas fa-tags',
+        'ability' => ['view', Tag::class]
+
+    ],
+    [
+        'title' => 'Roles',
+        'route' => 'roles.index',
+        'icon' => 'fas fa-user-shield',
+        'ability' => ['view', Role::class]
     ]
 ];

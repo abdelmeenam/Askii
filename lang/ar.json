@@ -15,7 +15,7 @@
     "Questions List": "الأسئلة",
     "Question title": "عنوان السؤال",
     "New Question": "سؤال جديد",
-    "Asked": "طرحت في",
+    "Asked": "طرحت ",
     "By": "بواسطة",
     "Answers": "الإجابات",
     "Create Question": "سؤال جديد",
@@ -25,15 +25,27 @@
     "View Answer": "عرض الإجابة",
     "Hello :name": "مرحبا :name",
     "New Answer From :user On \":question\"": "إجابة جديدة من :user على سؤالك \":question\"",
+    "Questions" : "الأسئلة",
 
-
-
+    "Question Title": "عنوان السؤال",
+    "Question Description": "وصف السؤال",
 
     "Overview": "نظرة عامة",
     "Inventory": "المخزون",
     "Customers": "العملاء",
     "Products": "المنتجات",
     "Language": "اللغات",
-    "Notifications": "الإشعارات"
+    "Notifications": "الإشعارات",
 
+    "# of Answers": "عدد الإجابات",
+    "Edit Profile": "تعديل البروفايل",
+    "Profile": "الصفحة الشخصية",
+    "Logout": "تسجيل الخروج",
+    "Change Password": "تغيير كلمة المرور",
+    "Current Password": "كلمة المرور الحالية",
+    "New Password": "كلمة المرور الجديدة",
+    "Confirm Password": "تأكيد كلمة المرور",
+    "Update Password": "تحديث كلمة المرور",
+    "Change password": "تغيير كلمة المرور",
+    "sign out": "تسجيل الخروج"
 }

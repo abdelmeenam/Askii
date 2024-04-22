@@ -7,12 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     @if (App::currentLocale() == 'ar')
-        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.rtl.min.css') }}">
+        <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.rtl.min.css')}}">
     @else
-        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">
     @endif
 
     <link rel="stylesheet" href="{{ asset('bootstrap/css/headers.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
     <title>{{ config('app.name') }}</title>
     @stack('styles')
 
@@ -32,8 +36,9 @@
                 @endauth
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"   method ="get" action="{{route('questions.index')}}" >
-                <input type="search" class="form-control" placeholder="Search..." name="search" aria-label="Search">
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"  id ="searchForm"  method ="get" action="{{route('questions.index')}}" >
+                <input type="search"  id="searchInput"  class="form-control" placeholder="Search..." name="search" aria-label="Search">
             </form>
 
             <!-- Language -->
@@ -66,13 +71,13 @@
                     <img src="{{Auth::user()->PhotoUrl}}" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
-                    <li><a class="dropdown-item" href="{{ route('password.edit') }}">Change password</a></li>
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ route('password.edit') }}">{{ __('Change password') }}</a></li>
 
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" onclick="document.getElementById('logout').submit()" href="javascript:;">Sign out</a></li>
+                    <li><a class="dropdown-item" onclick="document.getElementById('logout').submit()" href="javascript:;">{{ __('sign out') }}</a></li>
                     <form action="{{ route('logout') }}" method="post" id="logout" style="display: none;">
                         @csrf
                     </form>
@@ -119,6 +124,36 @@
 <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script>
     const userId="{{Auth::id()}}"
+    $(function() {
+        $('#searchInput').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "{{ route('questions.index') }}",
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function(data) {
+                        var mappedData = $.map(data, function(title, id) {
+                            return {
+                                label: title, // Display title in autocomplete suggestions
+                                value: id // Use ID as the value
+                            };
+                        });
+                        response(mappedData);
+                        //console.log(data);
+                    }
+                });
+            },
+            minLength: 2 ,// Minimum characters before triggering autocomplete
+            select: function (event, ui) {
+                //$('#search').val(ui.item.label);
+                //console.log(ui.item.value);
+                window.location.href = "{{ route('questions.show', '') }}/" + ui.item.value;
+
+             }
+        });
+    });
 </script>
 @vite(['resources/js/app.js'])
 @stack('scripts')

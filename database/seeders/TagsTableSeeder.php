@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TagsTableSeeder extends Seeder
 {
@@ -16,11 +17,28 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tags')->insert([
-            'name'=> 'Laravel' ,
-            'slug' =>Str::slug('Laravel'),
-            'created_at'=>now(),
-            'updated_at'=>now(),
-        ]);
+        // Disable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Truncate the tags table
+        DB::table('tags')->truncate();
+
+        // Enable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        $languages = [
+            'JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP', 'TypeScript', 'C#', 'Go',
+            //            'React', 'Angular', 'Vue.js', 'Express.js', 'Django', 'Ruby on Rails', 'Spring', 'Laravel', 'Flask', 'ASP.NET'
+        ];
+
+        foreach ($languages as $language) {
+            Tag::create([
+                'name' => $language,
+                'slug' => Str::slug($language),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
+    //php artisan db:seed --class=TagsTableSeeder
+
 }

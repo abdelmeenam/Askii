@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', 'Notifications')
+@section('title',  __('Notifications') )
 
 @section('content')
     <div>

@@ -20,14 +20,14 @@
             <div class="card-body">
                 <h5 class="card-title"><a href="{{route('questions.show' , $question->id) }}">{{ $question->title }}</a></h5>
                 <div class="text-muted mb-4">
-                    Asked: <strong> {{ $question->created_at->diffForHumans() }}_____</strong>
-                    {{__('By')}}: <strong>{{ $question->user->name }}______</strong>
-                    # of Answers: <strong> {{ $question->answers_count }} </strong>
+                    {{ __('Asked')}}: <strong> {{ $question->created_at->diffForHumans() }} -- </strong>
+                    {{__('By')}} : <strong>{{ $question->user->name ?? 'unknow' }} -- </strong>
+                    {{ __('# of Answers') }} : <strong> {{ $question->answers_count }} </strong>
 
                 </div>
                 <p class="card-text">{{ Str::words($question->description , 20 ) }}</p>
                 <div>
-                    {{__('Tags')}}: {{$question->tags->pluck('name')->implode(', ')}}
+                    {{__('Tags')}} : {{$question->tags->pluck('name')->implode(', ')}}
                 </div>
             </div>
 
@@ -58,7 +58,8 @@
     <script>
                 setTimeout(function() {
                     // document.querySelector('.alert').remove();
-                    document.querySelector('.alert').style.display = 'none';
+                    //document.querySelector('.alert').style.display = 'none';
+                    document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
                 },4000);
 
             </script>
