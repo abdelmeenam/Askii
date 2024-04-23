@@ -41,7 +41,7 @@ class NewAnswerNotification extends Notification
     public function via($notifiable)
     {
         //["mail" , "vonage"]
-        $channels = ['database', 'broadcast', 'mail', 'vonage'];
+        $channels = ['database', 'broadcast'];
         /*
         if (in_array('mail', $notifiable->notification_options)) {
             $channels[] = 'mail';
