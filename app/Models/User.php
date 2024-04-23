@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail , HasLocalePreference
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -57,6 +57,16 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         'email_verified_at' => 'datetime',
         'notification_options' => 'json'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->notification_options = ['database', 'broadcast'];
+        });
+    }
+
 
     //relationship with question
     public function questions()
@@ -106,10 +116,11 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
         if ($this->profile_photo) {
             return asset('storage/' . $this->profile_photo);
         }
-        return 'https://ui-avatars.com/api/?name=' .$this->name ;
+        return 'https://ui-avatars.com/api/?name=' . $this->name;
     }
 
-    public function hasAbility($ability){
+    public function hasAbility($ability)
+    {
         foreach ($this->roles as $role) {
             if (in_array($ability, $role->abilities)) {
                 return true;
