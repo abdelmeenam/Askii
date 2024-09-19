@@ -123,22 +123,25 @@ class QuestionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return  \Illuminate\views\view
+
      */
     public function edit($id)
     {
         $question = Question::findOrFail($id);
         $this->authorize('update', $question);
 
-        // Tags
+        //$questionTags = implode(separator: ',', $question->tags()->pluck('name')->toArray());
+        $questionTags = $question->tags->pluck('id')->toArray();
         $tags = Tag::all();
-        $questionTags = $question->tags()->pluck('id')->toArray();
+
 
         //dd($tags , $questionTags);
         return view('questions.edit', [
             'question' => $question,
             'tags' => $tags,
             'questionTags' => $questionTags,
+
         ]);
     }
 
