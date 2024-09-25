@@ -29,7 +29,7 @@ class QuestionsController extends Controller
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
         // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
         // Eager loading
-        $questions = Question::with(['user', 'tags'])
+        $questions = Question::with(['user', 'tags:id,name'])
             ->withCount('answers')
             ->latest()
             ->when($searchTerm, function ($query, $searchTerm) {

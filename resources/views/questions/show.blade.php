@@ -4,40 +4,43 @@
 @endsection
 
 @section('content')
-
-    <x-flash-message/>
+    <x-flash-message />
 
 
     <!-- Question Details -->
-    <div class="card mb-3" >
+    <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">{{ $question->title }}</h5>
             <div class="text-muted mb-4">
                 Asked: <strong> {{ $question->created_at->diffForHumans() }}_____</strong>
                 By: <strong>{{ $question->user->name }}</strong>
             </div>
-            <p class="card-text">{{ $question->description  }}</p>
-            <div>
-                Tags
-                    <ul>
-                        @foreach($question->tags as $tag)
-                            <li>{{ $tag->name }}</li>
-                            {{--   <a href="{{ route('tags.show' , $tag->id) }}" class="badge badge-info">{{ $tag->name }}</a>--}}
-                        @endforeach
-                    </ul>
+            <p class="card-text">{{ $question->description }}</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    @foreach ($question->tags as $tag)
+                        <span class="badge bg-primary"># {{ $tag->name }}</span>
+                    @endforeach
+                </div>
+                <div class="d-flex ">
+                    <span class="badge bg-dark">
+                        {{ __('Views') }} : {{ $question->views }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Answers -->
     <section>
-        <h3> {{$questionsCount}} Answers</h3>
+        <h3> {{ $questionsCount }} Answers</h3>
         @forelse($answers as $answer)
             <div class="card-body">
 
-                @if($answer->best_answer == true)
+                @if ($answer->best_answer == true)
                     <span class="badge bg-success">Best Answer</span>
-                </span> @endif
+                    </span>
+                @endif
 
                 <p class="card-text">{{ $answer->description }}</p>
                 <div class="text-muted mb-4">
@@ -45,26 +48,32 @@
                     By: <strong>{{ $answer->user->name }}</strong>
                 </div>
 
-                @auth()
-                    @if( $answer->best_answer == false  && Auth::id() == $question->user_id)
-                        <form action="{{ route('answers.best' , $answer->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-success  btn-sm mb-1">Vote as best answer</button>
-                        </form>
-                    @endif
-                @endauth
+                <div class="d-flex justify-content-between">
+                    <div> @auth()
+                            @if ($answer->best_answer == false && Auth::id() == $question->user_id)
+                                <form action="{{ route('answers.best', $answer->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-success  btn-sm mb-1">Vote as best answer</button>
+                                </form>
+                            @endif
+                        @endauth
+                    </div>
 
-                @if(Auth::id() == $answer->user_id)
-                <div>
-                    <form class="d-inline" action="{{route('answers.destroy' ,  $answer->id)}}" method="post" class="delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                    </form>
-                    <a  href="{{route('answers.edit' ,  $answer->id)}}" class="btn btn-outline-primary btn-sm  ">Edit</a>
+                    @if (Auth::id() == $answer->user_id)
+                        <div>
+                            <form class="d-inline" action="{{ route('answers.destroy', $answer->id) }}" method="post"
+                                class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                            <a href="{{ route('answers.edit', $answer->id) }}"
+                                class="btn btn-outline-primary btn-sm  ">Edit</a>
+                        </div>
+                    @endif
                 </div>
-                @endif
+
             </div>
             <hr>
         @empty
@@ -78,13 +87,14 @@
     @auth()
         <section>
             <h3>Answer this question</h3>
-            <form action="{{ route('answers.store')}}" method="POST">
+            <form action="{{ route('answers.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control @error('description') is-invalid @enderror"  id="description"  name="description"  rows="3"  placeholder="Enter description">{{ old('description') }}</textarea>
+                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
+                        rows="3" placeholder="Enter description">{{ old('description') }}</textarea>
                     @error('description')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <input type="hidden" name="question_id" value="{{ $question->id }}">
