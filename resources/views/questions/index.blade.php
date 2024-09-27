@@ -1,9 +1,14 @@
 @extends('layouts.default')
 
+
+@push('styles')
+@endpush
+
 @section('title')
-    {{ __('Questions List') }}
-    <a href="{{ route('questions.create') }}" class="btn btn-outline-primary ">{{ __('+ Create Question') }}
-    </a>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>{{ __('Questions List ') }}<i class="fa-solid fa-person-circle-question me-2"></i></h2>
+        <a href="{{ route('questions.create') }}" class="btn btn-success">{{ __('+ Ask') }}</a>
+    </div>
 @endsection
 
 
@@ -16,24 +21,33 @@
 
 
     @foreach ($questions as $question)
-        <div class="card mb-3">
+        <div class="card mb-3 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title"><a href="{{ route('questions.show', $question->id) }}">{{ $question->title }}</a></h5>
-                <div class="text-muted mb-4">
-                    {{ __('Asked') }}: <strong> {{ $question->created_at->diffForHumans() }} -- </strong>
-                    {{ __('By') }} : <strong>{{ $question->user->name ?? 'unknow' }} -- </strong>
-                    {{ __('# of Answers') }} : <strong> {{ $question->answers_count }} </strong>
+                <h5 class="card-title">
+                    <a href="{{ route('questions.show', $question->id) }}" class="text-decoration-none text-dark">
+                        <i class=""></i>{{ $question->title }}
+                    </a>
+                </h5>
+                <div class="text-muted mb-3">
+                    <small>
+                        <i class="fas fa-clock me-1"></i>{{ __('Asked') }}:
+                        <strong>{{ $question->created_at->diffForHumans() }}</strong> &bull;
+                        <i class="fas fa-user me-1"></i>{{ __('By') }}:
+                        <strong>{{ $question->user->name ?? __('Unknown') }}</strong> &bull;
+                        <i class="fas fa-comment-dots me-1"></i>{{ __('Number of Answers') }}:
+                        <strong>{{ $question->answers_count }}</strong>
+                    </small>
                 </div>
 
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mb-2">
                     <div>
                         @foreach ($question->tags as $tag)
-                            <span class="badge bg-primary"># {{ $tag->name }}</span>
+                            <span class="badge bg-primary me-1"># {{ $tag->name }}</span>
                         @endforeach
                     </div>
-                    <div class="d-flex ">
+                    <div>
                         <span class="badge bg-dark">
-                            {{ __('Views') }} : {{ $question->views }}
+                            <i class="fas fa-eye me-1"></i>{{ __('Views') }}: {{ $question->views }}
                         </span>
                     </div>
                 </div>
@@ -61,7 +75,11 @@
     @endforeach
 
 
-    {{ $questions->withQueryString()->links() }}
+
+
+    <div class="container d-flex justify-content-center align-items-center">
+        {{ $questions->withQueryString()->links() }}
+    </div>
 
     <script>
         setTimeout(function() {

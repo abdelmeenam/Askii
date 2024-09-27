@@ -8,18 +8,15 @@
 
 
     <!-- Question Details -->
-    <div class="card mb-3">
+    <div class="card mb-3 shadow-sm">
         <div class="card-body">
             <h5 class="card-title">{{ $question->title }}</h5>
-            <div class="text-muted mb-4">
-                Asked: <strong> {{ $question->created_at->diffForHumans() }}_____</strong>
-                By: <strong>{{ $question->user->name }}</strong>
-            </div>
+
             <p class="card-text">{{ $question->description }}</p>
             <div class="d-flex justify-content-between">
                 <div>
                     @foreach ($question->tags as $tag)
-                        <span class="badge bg-primary"># {{ $tag->name }}</span>
+                        <span class="badge bg-info"># {{ $tag->name }}</span>
                     @endforeach
                 </div>
                 <div class="d-flex ">
@@ -36,16 +33,17 @@
         <h3> {{ $questionsCount }} Answers</h3>
         @forelse($answers as $answer)
             <div class="card-body">
-
                 @if ($answer->best_answer == true)
                     <span class="badge bg-success">Best Answer</span>
                     </span>
                 @endif
-
                 <p class="card-text">{{ $answer->description }}</p>
                 <div class="text-muted mb-4">
-                    Asked: <strong> {{ $answer->created_at->diffForHumans() }}_____</strong>
-                    By: <strong>{{ $answer->user->name }}</strong>
+
+                    <i class="fas fa-clock me-1"></i>{{ __('Answered') }}:
+                    <strong>{{ $answer->created_at->diffForHumans() }}</strong> &bull;
+                    <i class="fas fa-user me-1"></i>{{ __('By') }}:
+                    <strong>{{ $answer->user->name ?? __('Unknown') }}</strong> &bull;
                 </div>
 
                 <div class="d-flex justify-content-between">

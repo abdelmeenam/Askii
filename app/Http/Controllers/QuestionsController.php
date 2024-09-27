@@ -42,7 +42,8 @@ class QuestionsController extends Controller
                     $query->where('id', $tag_id);
                 });
             })
-            ->paginate(7);
+            ->paginate(perPage: 3);
+
 
         if (request()->expectsJson()) {
             // If request expects JSON response (for autocomplete search), return search results only
