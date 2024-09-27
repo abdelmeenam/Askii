@@ -14,7 +14,8 @@
         "laravel/vonage-notification-channel": "^3.2",
         "mcamara/laravel-localization": "^1.8",
         "pusher/pusher-php-server": "^7.2",
-        "symfony/intl": "^6.3"
+        "symfony/intl": "^6.3",
+        "yoeunes/toastr": "^2.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",

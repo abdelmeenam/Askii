@@ -26,8 +26,32 @@ class TagsTableSeeder extends Seeder
         // Enable foreign key checks
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $languages = [
-            'JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP', 'TypeScript', 'C#', 'Go',
-            //            'React', 'Angular', 'Vue.js', 'Express.js', 'Django', 'Ruby on Rails', 'Spring', 'Laravel', 'Flask', 'ASP.NET'
+            'JavaScript',
+            'Python',
+            'Java',
+            'C++',
+            'Ruby',
+            'Swift',
+            'PHP',
+            'TypeScript',
+            'C#',
+            'Go',
+            'React',
+            'Angular',
+            'Vue.js',
+            'Express.js',
+            'Django',
+            'Ruby on Rails',
+            'Spring',
+            'Laravel',
+            'Flask',
+            'ASP.NET',
+            'Node.js',
+            'jQuery',
+            'Bootstrap',
+            'Tailwind CSS',
+            'Sass',
+            'Less',
         ];
 
         foreach ($languages as $language) {

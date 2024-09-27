@@ -1,8 +1,6 @@
 @extends('layouts.default')
 
 
-@push('styles')
-@endpush
 
 @section('title')
     <div class="d-flex justify-content-between align-items-center">
@@ -10,6 +8,7 @@
         <a href="{{ route('questions.create') }}" class="btn btn-success">{{ __('+ Ask') }}</a>
     </div>
 @endsection
+
 
 
 @section('content')
@@ -80,12 +79,18 @@
     <div class="container d-flex justify-content-center align-items-center">
         {{ $questions->withQueryString()->links() }}
     </div>
-
+    {{--
     <script>
         setTimeout(function() {
             // document.querySelector('.alert').remove();
             //document.querySelector('.alert').style.display = 'none';
             document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
         }, 4000);
-    </script>
+    </script> --}}
 @endsection
+
+
+@push('scripts')
+    @toastr_js
+    @toastr_render
+@endpush

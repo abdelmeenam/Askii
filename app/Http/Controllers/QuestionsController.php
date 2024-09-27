@@ -61,6 +61,7 @@ class QuestionsController extends Controller
         $this->authorize('create', Question::class);
         // ALl tags
         $tags = Tag::all();
+
         return view('questions.create', [
             'question' => new Question(),
             'tags' => $tags,
@@ -95,8 +96,9 @@ class QuestionsController extends Controller
             throw $e;
         }
 
-        return redirect()->route('questions.index')
-            ->with('success', 'Question created successfully.');
+        //return redirect()->route('questions.index')    ->with('success', 'Question created successfully.');
+        toastr()->success(message: __('Question created successfully'));
+        return redirect()->route('questions.index');
     }
 
     /**
@@ -175,8 +177,9 @@ class QuestionsController extends Controller
             DB::rollback();
             throw $e;
         }
-        return redirect()->route('questions.index')
-            ->with('success', 'Question updated successfully.');
+        //return redirect()->route('questions.index')       ->with('success', 'Question updated successfully.');
+        toastr()->success(message: __('Question updated successfully'));
+        return redirect()->route('questions.index');
     }
 
     /**
@@ -191,7 +194,8 @@ class QuestionsController extends Controller
         $this->authorize('delete', $question);
 
         Question::destroy($id);
-        return redirect()->route('questions.index')
-            ->with('success', 'Question deleted successfully.');
+        // return redirect()->route('questions.index')   ->with('success', 'Question deleted successfully.');
+        toastr()->success(message: __('Question deleted successfully'));
+        return redirect()->route('questions.index');
     }
 }
