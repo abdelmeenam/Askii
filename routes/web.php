@@ -17,10 +17,15 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 
-Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ,'prefix'=> LaravelLocalization::setLocale() ] , function () {
+
+
+
+
+
+Route::group(['middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'], 'prefix' => LaravelLocalization::setLocale()], function () {
 
     // Tags
-    Route::group(['middleware'=>['auth' ,'checkUserType:admin,super-admin'] , 'prefix' => 'tags', 'as' => 'tags.'], function () {
+    Route::group(['middleware' => ['auth', 'checkUserType:admin,super-admin'], 'prefix' => 'tags', 'as' => 'tags.'], function () {
         Route::get('', [TagsController::class, 'index'])
             ->name('index');
 
@@ -41,19 +46,19 @@ Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'l
     });
 
     // Profile
-    Route::group(['middleware'=>'auth' ,'prefix' => 'profile', 'as' => 'profile.'], function () {
+    Route::group(['middleware' => 'auth', 'prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/', [UserProfile::class, 'edit'])->name('edit');
         Route::put('/', [UserProfile::class, 'update'])->name('update');
     });
 
     // Change password
-    Route::group(['middleware'=>'auth' ,'prefix' => 'password', 'as' => 'password.'], function () {
+    Route::group(['middleware' => 'auth', 'prefix' => 'password', 'as' => 'password.'], function () {
         Route::get('/change', [ChangePasswordController::class, 'edit'])->name('edit');
         Route::post('/', [ChangePasswordController::class, 'update'])->name('update');
     });
 
     // Answers
-    Route::group(['middleware'=>'auth' ,'prefix' => 'answers', 'as' => 'answers.'], function () {
+    Route::group(['middleware' => 'auth', 'prefix' => 'answers', 'as' => 'answers.'], function () {
 
         Route::put('/{id}/best', [AnswersController::class, 'bestAnswer'])
             ->name('best');
@@ -66,11 +71,12 @@ Route::group(['middleware'=>['localeSessionRedirect', 'localizationRedirect', 'l
             ->name('update');
         Route::delete('{answerId}', [AnswersController::class, 'destroy'])
             ->name('destroy');
-
     });
 
     // Questions
+    Route::get('questions/search/', [QuestionsController::class, 'fetchQuestionSearchResults'])->name('questions.search');
     Route::resource('questions', QuestionsController::class);
+
 
     // Roles
     Route::resource('roles', RolesController::class);
@@ -87,9 +93,9 @@ Route::get('/', function () {
 });
 
 //dashboard
-Route::get('/dashboard' , [DashboardController::class , 'index'])->name('dashboard');
-Route::get('/dashboard/chart' , [DashboardController::class , 'getChartData'])->name('dashboard.chart');
-Route::get('/dashboard/chart/tags' , [DashboardController::class , 'getTagChartData'])->name('dashboard.chart.tags');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/chart', [DashboardController::class, 'getChartData'])->name('dashboard.chart');
+Route::get('/dashboard/chart/tags', [DashboardController::class, 'getTagChartData'])->name('dashboard.chart.tags');
 
 
 
@@ -102,4 +108,4 @@ Route::get('/dashboard/chart/tags' , [DashboardController::class , 'getTagChartD
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Answer extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
-    protected $fillable = ['description', 'user_id' , 'question_id'];
+    protected $fillable = ['description', 'user_id', 'question_id'];
 
     //relationship with question
     public function question()

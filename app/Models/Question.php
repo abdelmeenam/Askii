@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Question extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     //mass assignment
     protected $fillable = [
@@ -16,6 +17,17 @@ class Question extends Model
         'status',
         'user_id',
     ];
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'views' => $this->views,
+        ];
+    }
+
 
     protected $hidden = [
         'updated_at',
@@ -45,5 +57,4 @@ class Question extends Model
             'id'            // P.K for related model
         );
     }
-
 }

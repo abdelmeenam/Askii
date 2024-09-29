@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\Localization;
+use App\Models\Tag;
+use App\Search\News;
 use App\Models\Answer;
 use App\Models\Question;
-use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Localization;
 
 class QuestionsController extends Controller
 {
@@ -23,36 +24,43 @@ class QuestionsController extends Controller
 
     public function index()
     {
-        $searchTerm = trim(request('search'));
         $tag_id = request('tag_id');
-
+        /*
         //$questions = Question::leftjoin('users' , 'questions.user_id' , '=' ,'users.id')->select('questions.*' , 'users.name as user_name')->latest()->paginate(10);
-        // $questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
-        // Eager loading
-        $questions = Question::with(['user', 'tags:id,name'])
-            ->withCount('answers')
-            ->latest()
-            ->when($searchTerm, function ($query, $searchTerm) {
-                $query->where('title', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
-            })
-            ->when($tag_id, function ($query, $tag_id) {
+        //$questions = Question::latest()->paginate(10);        //Too much queries  ( $question->user->name )
+                   ->when($tag_id, function ($query, $tag_id) {
                 //$query->whereRaw('questions.id IN (SELECT question_id FROM question_tag WHERE tag_id = ?)', [$tag_id]);
                 $query->whereHas('tags', function ($query) use ($tag_id) {
                     $query->where('id', $tag_id);
                 });
             })
-            ->paginate(perPage: 3);
+                       ->when($searchTerm, function ($query, $searchTerm) {
+                $query->where('title', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+            })
+            */
 
-
-        if (request()->expectsJson()) {
-            // If request expects JSON response (for autocomplete search), return search results only
-            return $questions->pluck('title', 'id');
-        }
+        $questions = Question::with(['user', 'tags:id,name'])
+            ->withCount('answers')
+            ->latest()
+            ->paginate(perPage: 5);
 
         return view('questions.index', [
             'questions' => $questions,
         ]);
+    }
+
+    public function fetchQuestionSearchResults(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        if ($request->expectsJson()) {
+            // Using Algolia or Laravel Scout to perform the search
+            $questions = Question::search($searchTerm)->get();
+            $results = $questions->pluck('title', 'id');
+
+            return response()->json($results);
+        }
     }
 
 
@@ -61,7 +69,6 @@ class QuestionsController extends Controller
         $this->authorize('create', Question::class);
         // ALl tags
         $tags = Tag::all();
-
         return view('questions.create', [
             'question' => new Question(),
             'tags' => $tags,
@@ -197,5 +204,13 @@ class QuestionsController extends Controller
         // return redirect()->route('questions.index')   ->with('success', 'Question deleted successfully.');
         toastr()->success(message: __('Question deleted successfully'));
         return redirect()->route('questions.index');
+    }
+
+    public function searchUsingAlgolia(Request $request)
+    {
+        $models = News::search('best')->get();
+        echo get_class(object: $models[0]); // "App\Article"
+        echo get_class($models[1]); // "App\Comment"
+
     }
 }

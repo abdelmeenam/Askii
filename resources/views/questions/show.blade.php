@@ -41,9 +41,11 @@
                 <div class="text-muted mb-4">
 
                     <i class="fas fa-clock me-1"></i>{{ __('Answered') }}:
-                    <strong>{{ $answer->created_at->diffForHumans() }}</strong> &bull;
+                    <strong class="me-3">{{ $answer->created_at->diffForHumans() }}</strong>
                     <i class="fas fa-user me-1"></i>{{ __('By') }}:
-                    <strong>{{ $answer->user->name ?? __('Unknown') }}</strong> &bull;
+                    <strong class="me-3">{{ $answer->user->name ?? __('Unknown') }}</strong>
+
+
                 </div>
 
                 <div class="d-flex justify-content-between">

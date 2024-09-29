@@ -12,11 +12,11 @@
 
 
 @section('content')
-    @if (session()->has('success'))
+    {{-- @if (session()->has('success'))
         <div class="alert alert-success">
             {{ session()->get('success') }}
         </div>
-    @endif
+    @endif --}}
 
 
     @foreach ($questions as $question)
@@ -30,11 +30,11 @@
                 <div class="text-muted mb-3">
                     <small>
                         <i class="fas fa-clock me-1"></i>{{ __('Asked') }}:
-                        <strong>{{ $question->created_at->diffForHumans() }}</strong> &bull;
+                        <strong class="me-3">{{ $question->created_at->diffForHumans() }}</strong>
                         <i class="fas fa-user me-1"></i>{{ __('By') }}:
-                        <strong>{{ $question->user->name ?? __('Unknown') }}</strong> &bull;
-                        <i class="fas fa-comment-dots me-1"></i>{{ __('Number of Answers') }}:
-                        <strong>{{ $question->answers_count }}</strong>
+                        <strong class="me-3">{{ $question->user->name ?? __('Unknown') }}</strong>
+                        <i class="fas fa-comment-dots me-1"></i>{{ __('Answers') }}:
+                        <strong class="me-3">{{ $question->answers_count }}</strong>
                     </small>
                 </div>
 
@@ -60,7 +60,8 @@
                             <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-outline-info btn-sm">Edit</a>
                         </div>
                         <div>
-                            <form action="{{ route('questions.destroy', $question->id) }}" method="post" class="delete-form">
+                            <form id="deleteQuestionForm" action="{{ route('questions.destroy', $question->id) }}"
+                                method="post" class="delete-form">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
@@ -79,18 +80,26 @@
     <div class="container d-flex justify-content-center align-items-center">
         {{ $questions->withQueryString()->links() }}
     </div>
-    {{--
+
     <script>
-        setTimeout(function() {
-            // document.querySelector('.alert').remove();
-            //document.querySelector('.alert').style.display = 'none';
-            document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
-        }, 4000);
-    </script> --}}
+        /**
+                setTimeout(function() {
+                    // document.querySelector('.alert').remove();
+                    //document.querySelector('.alert').style.display = 'none';
+                    document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
+                }, 4000);
+        **/
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure?')) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
-
-
-@push('scripts')
-    @toastr_js
-    @toastr_render
-@endpush

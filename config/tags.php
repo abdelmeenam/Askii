@@ -1,0 +1,31 @@
+<?php
+
+
+return  [
+    'JavaScript',
+    'Python',
+    'Java',
+    'C++',
+    'Ruby',
+    'Swift',
+    'PHP',
+    'TypeScript',
+    'C#',
+    'Go',
+    'React',
+    'Angular',
+    'Vue.js',
+    'Express.js',
+    'Django',
+    'Ruby on Rails',
+    'Spring',
+    'Laravel',
+    'Flask',
+    'ASP.NET',
+    'Node.js',
+    'jQuery',
+    'Bootstrap',
+    'Tailwind CSS',
+    'Sass',
+    'Less',
+];

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
 
     protected $fillable = ['name', 'slug'];
@@ -24,5 +25,4 @@ class Tag extends Model
             'id'
         );
     }
-
 }

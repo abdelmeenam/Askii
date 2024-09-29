@@ -22,6 +22,10 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>{{ config('app.name') }}</title>
+
+
+
+
     @stack('styles')
 
 </head>
@@ -30,12 +34,6 @@
     <header class="p-3 mb-3 border-bottom">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/"
-                    class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                        <use xlink:href="#bootstrap" />
-                    </svg>
-                </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="{{ route('questions.index') }}"
@@ -47,10 +45,14 @@
                 </ul>
 
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" id ="searchForm" method ="get"
+                <form class="col-12 col-md-6  mb-3 mb-lg-0 me-lg-3" id="searchForm" method="get"
                     action="{{ route('questions.index') }}">
-                    <input type="search" id="searchInput" class="form-control" placeholder="Search..." name="search"
-                        aria-label="Search">
+                    <div class="input-group">
+                        <input type="search" id="searchInput" class="form-control" placeholder="Search questions..."
+                            name="search" aria-label="Search"
+                            style="border-radius: 25px  25px; border-right: 0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 10px; transition: all 0.3s ease;">
+
+                    </div>
                 </form>
 
                 <!-- Language -->
@@ -73,7 +75,6 @@
                         @endforeach
                     </ul>
                 </div>
-
                 @auth
                     <!-- Notification -->
                     <x-notification-menu>
@@ -112,14 +113,18 @@
 
     <div class="container py-5 ">
         <div class="row">
-            <div class="col-md-12 ">
+            <aside class="col-md-3 p-2 bg-light">
+                <h2>Tags</h2>
+                <div class="row">
+                    <x-tags>
+                    </x-tags>
+                </div>
+            </aside>
+            <div class="col-md-9  ">
                 <h2>@yield('title', 'page Title')</h2>
+                @yield('content')
             </div>
         </div>
-
-
-        @yield('content')
-
 
         <!-- Notification Toast -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
@@ -145,7 +150,7 @@
             $('#searchInput').autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "{{ route('questions.index') }}",
+                        url: "{{ route('questions.search') }}",
                         dataType: "json",
                         data: {
                             search: request.term
@@ -153,26 +158,28 @@
                         success: function(data) {
                             var mappedData = $.map(data, function(title, id) {
                                 return {
-                                    label: title, // Display title in autocomplete suggestions
-                                    value: id // Use ID as the value
+                                    value: title, // Display title in the input field
+                                    id: id // Store ID separately for use
                                 };
                             });
-                            response(mappedData);
-                            //console.log(data);
+                            response(mappedData)
                         }
                     });
                 },
-                minLength: 2, // Minimum characters before triggering autocomplete
+                minLength: 3, // Minimum characters before triggering autocomplete
                 select: function(event, ui) {
-                    //$('#search').val(ui.item.label);
-                    //console.log(ui.item.value);
-                    window.location.href = "{{ route('questions.show', '') }}/" + ui.item.value;
-
+                    // When an item is selected, set the input value to the label (title)
+                    $('#searchInput').val(ui.item.value); // Title in the input
+                    // Redirect using the selected item's ID
+                    window.location.href = "{{ route('questions.show', '') }}/" + ui.item.id;
+                    return false; // Prevent default behavior
                 }
             });
         });
     </script>
+
     @vite(['resources/js/app.js'])
+
     @stack('scripts')
 </body>
 

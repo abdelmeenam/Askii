@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Search\News;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Algolia\ScoutExtended\Searchable\Aggregator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        News::bootSearchable();
     }
 }
