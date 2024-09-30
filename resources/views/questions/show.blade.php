@@ -21,7 +21,7 @@
                 </div>
                 <div class="d-flex ">
                     <span class="badge bg-dark">
-                        {{ __('Views') }} : {{ $question->views }}
+                        {{ __('Views') }} : {{ $viewsCount }}
                     </span>
                 </div>
             </div>

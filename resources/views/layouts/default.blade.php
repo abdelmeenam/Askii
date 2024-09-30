@@ -113,17 +113,8 @@
 
     <div class="container py-5 ">
         <div class="row">
-            <aside class="col-md-3 p-2 bg-light">
-                <h2>Tags</h2>
-                <div class="row">
-                    <x-tags>
-                    </x-tags>
-                </div>
-            </aside>
-            <div class="col-md-9  ">
-                <h2>@yield('title', 'page Title')</h2>
-                @yield('content')
-            </div>
+            <h2>@yield('title', 'page Title')</h2>
+            @yield('content')
         </div>
 
         <!-- Notification Toast -->

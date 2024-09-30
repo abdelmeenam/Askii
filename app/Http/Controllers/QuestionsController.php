@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
-use App\Search\News;
-use App\Models\Answer;
 use App\Models\Question;
+use App\Models\QuestionView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Middleware\Localization;
+
 
 class QuestionsController extends Controller
 {
+
+
+
     /**
      * QuestionsController constructor.
      */
@@ -112,20 +113,29 @@ class QuestionsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show($id)
+    public function show(Question $question)
     {
+        $answers = $question->answers()->with(relations: 'user')->get();
+        $userId = auth()->id(); // Get the authenticated user's ID
 
-        $question = Question::findOrfail($id);
-        $questionsCount = $question->answers->count();          //->withCount('answers')
-        $answers = $question->answers()->with('user')->get();
-        //$answers =Answer::where('question_id' , $id)->with('user')->latest()->get();
+        $alreadyViewed = QuestionView::where('question_id', $question->id)
+            ->where('user_id', $userId)
+            ->exists();
+
+        if (!$alreadyViewed && auth()->check()) {
+            QuestionView::create([
+                'question_id' => $question->id,
+                'user_id' => $userId,
+            ]);
+        }
 
         return view('questions.show', [
             'question' => $question,
             'answers' => $answers,
-            'questionsCount' => $questionsCount,
+            'questionsCount' =>    $answers->count(),
+            'viewsCount' => $question->views()->count(),
         ]);
     }
 
@@ -133,7 +143,7 @@ class QuestionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return  \Illuminate\views\view
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 
      */
     public function edit($id)
@@ -204,13 +214,5 @@ class QuestionsController extends Controller
         // return redirect()->route('questions.index')   ->with('success', 'Question deleted successfully.');
         toastr()->success(message: __('Question deleted successfully'));
         return redirect()->route('questions.index');
-    }
-
-    public function searchUsingAlgolia(Request $request)
-    {
-        $models = News::search('best')->get();
-        echo get_class(object: $models[0]); // "App\Article"
-        echo get_class($models[1]); // "App\Comment"
-
     }
 }

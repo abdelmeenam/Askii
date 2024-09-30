@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
+
 class Question extends Model
 {
     use HasFactory, Searchable;
+
 
     //mass assignment
     protected $fillable = [
@@ -17,6 +19,9 @@ class Question extends Model
         'status',
         'user_id',
     ];
+
+    protected $removeViewsOnDelete = true;
+
 
     public function toSearchableArray()
     {
@@ -56,5 +61,10 @@ class Question extends Model
             'id',           // P.K for current model
             'id'            // P.K for related model
         );
+    }
+
+    public function views()
+    {
+        return $this->hasMany(QuestionView::class);
     }
 }
