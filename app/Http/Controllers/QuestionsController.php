@@ -16,7 +16,7 @@ class QuestionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(middleware: ['auth'])->except(['index', 'show', 'fetchQuestionSearchResults']);
+        $this->middleware(middleware: ['auth', 'verified'])->except(['index', 'show', 'fetchQuestionSearchResults']);
     }
 
 
@@ -41,7 +41,7 @@ class QuestionsController extends Controller
         $questions = Question::with(['user', 'tags:id,name'])
             ->withCount(['answers', 'views'])
             ->latest()
-            ->paginate(perPage: 10);
+            ->paginate(perPage: 5);
 
         return view('questions.index', [
             'questions' => $questions,

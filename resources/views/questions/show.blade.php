@@ -128,7 +128,6 @@
                     </div>
                 </div>
             </div>
-            <hr>
         @empty
             <div class="card mb-3">
                 <div class="card-body">
@@ -142,13 +141,12 @@
     <!-- Create Answer -->
     @auth()
         <section>
-            <h3>Answer this question</h3>
+            <h4>Add Answer</h4>
             <form action="{{ route('answers.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="description">Description</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                        rows="3" placeholder="Enter description">{{ old('description') }}</textarea>
+                        rows="3" placeholder="answer.....">{{ old('description') }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -161,7 +159,8 @@
 
     @guest
         <div class="alert alert-info">
-            Please <a href="{{ route('login') }}">login</a> to answer this question.
+            Please <a href="{{ route('login') }}">login</a> to answer this question or
+            <a href="{{ route('register') }}">Create account</a>.
         </div>
     @endguest
 @endsection
