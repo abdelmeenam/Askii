@@ -21,6 +21,9 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 
+Route::get('questions/search/', [QuestionsController::class, 'fetchQuestionSearchResults'])->name(name: 'questions.search');
+
+
 
 Route::group(['middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'], 'prefix' => LaravelLocalization::setLocale()], function () {
 
@@ -74,7 +77,6 @@ Route::group(['middleware' => ['localeSessionRedirect', 'localizationRedirect', 
     });
 
     // Questions
-    Route::get('questions/search/', [QuestionsController::class, 'fetchQuestionSearchResults'])->name('questions.search');
     Route::resource('questions', QuestionsController::class);
 
 
@@ -86,11 +88,15 @@ Route::group(['middleware' => ['localeSessionRedirect', 'localizationRedirect', 
 
     // Notifications
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index')->middleware('auth');
+    // destroy notification
+    Route::delete('/notifications/{notification}', [NotificationsController::class, 'destroy'])->name('notifications.destroy')->middleware('auth');
 });
 
 Route::get('/', function () {
     return redirect()->route('questions.index');
 });
+
+
 
 //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

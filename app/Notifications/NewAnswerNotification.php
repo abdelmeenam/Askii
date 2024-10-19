@@ -41,7 +41,7 @@ class NewAnswerNotification extends Notification
     public function via($notifiable)
     {
         //["mail" , "vonage"]
-        $channels = ['database', 'broadcast'];
+        $channels = ['database', 'broadcast', 'mail'];
         /*
         if (in_array('mail', $notifiable->notification_options)) {
             $channels[] = 'mail';
@@ -64,7 +64,7 @@ class NewAnswerNotification extends Notification
     {
         return (new MailMessage)
             ->subject(__('New Answer'))
-            ->from('notify@stackOverFlow.com')
+            ->from('notify@Asky.com')
             ->greeting(__("Hello :name", ['name' => $notifiable->name]))
             ->line(
                 __('New Answer From :user On ":question"', [

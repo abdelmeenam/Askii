@@ -62,7 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     {
         parent::boot();
 
-        static::creating(function ($user) {
+        static::creating(callback: function ($user) {
             $user->notification_options = ['database', 'broadcast'];
         });
     }

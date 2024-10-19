@@ -11,15 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionsController extends Controller
 {
-
-
-
     /**
      * QuestionsController constructor.
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show', 'fetchQuestionSearchResults']);
     }
 
 
@@ -42,9 +39,9 @@ class QuestionsController extends Controller
             */
 
         $questions = Question::with(['user', 'tags:id,name'])
-            ->withCount('answers')
+            ->withCount(['answers', 'views'])
             ->latest()
-            ->paginate(perPage: 5);
+            ->paginate(perPage: 10);
 
         return view('questions.index', [
             'questions' => $questions,
@@ -123,6 +120,7 @@ class QuestionsController extends Controller
         $alreadyViewed = QuestionView::where('question_id', $question->id)
             ->where('user_id', $userId)
             ->exists();
+
 
         if (!$alreadyViewed && auth()->check()) {
             QuestionView::create([
@@ -207,6 +205,7 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
+
         $question = Question::findOrFail($id);
         $this->authorize('delete', $question);
 

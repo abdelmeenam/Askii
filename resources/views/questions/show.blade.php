@@ -19,7 +19,7 @@
                         <span class="badge bg-info"># {{ $tag->name }}</span>
                     @endforeach
                 </div>
-                <div class="d-flex ">
+                <div>
                     <span class="badge bg-dark">
                         {{ __('Views') }} : {{ $viewsCount }}
                     </span>

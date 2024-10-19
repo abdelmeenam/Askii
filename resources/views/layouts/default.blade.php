@@ -146,6 +146,7 @@
                         data: {
                             search: request.term
                         },
+
                         success: function(data) {
                             var mappedData = $.map(data, function(title, id) {
                                 return {

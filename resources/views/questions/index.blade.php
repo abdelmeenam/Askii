@@ -16,15 +16,15 @@
             {{ session()->get('success') }}
         </div>
     @endif --}}
-    <aside class="col-md-3 p-2 bg-light">
+    {{-- <aside class="col-md-3 p-2 bg-light">
         <h2>Tags</h2>
         <div class="row">
             <x-tags>
             </x-tags>
         </div>
-    </aside>
-    <div class="col-md-9  ">
-        @foreach ($questions as $question)
+    </aside> --}}
+    <div class="col-md">
+        @forelse ($questions as $question)
             <div class="card mb-3 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -51,7 +51,7 @@
                         </div>
                         <div>
                             <span class="badge bg-dark">
-                                <i class="fas fa-eye me-1"></i>{{ __('Views') }}: {{ $question->views }}
+                                <i class="fas fa-eye me-1"></i>{{ __('Views') }}: {{ $question->views_count }}
                             </span>
                         </div>
                     </div>
@@ -78,20 +78,29 @@
                 @endcan
 
             </div>
-        @endforeach
+
+
+        @empty
+            <!-- Display this if the collection is empty -->
+            <div class="text-center ">
+                <h1 class="display-4 font-weight-bold">No Questions Found</h1>
+                <p class="lead">It looks like there are no questions available right now.</p>
+            </div>
+        @endforelse
 
         <div class="container d-flex justify-content-center align-items-center">
             {{ $questions->withQueryString()->links() }}
         </div>
+
     </div>
     <script>
         /**
-                                            setTimeout(function() {
-                                                // document.querySelector('.alert').remove();
-                                                //document.querySelector('.alert').style.display = 'none';
-                                                document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
-                                            }, 4000);
-                                    **/
+                                                                                                                    setTimeout(function() {
+                                                                                                                        // document.querySelector('.alert').remove();
+                                                                                                                        //document.querySelector('.alert').style.display = 'none';
+                                                                                                                        document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
+                                                                                                                    }, 4000);
+                                                                                                            **/
 
         document.addEventListener('DOMContentLoaded', function() {
             let deleteForms = document.querySelectorAll('.delete-form');
