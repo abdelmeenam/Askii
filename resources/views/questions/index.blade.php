@@ -4,8 +4,8 @@
 
 @section('title')
     <div class="d-flex justify-content-between align-items-center">
-        <h2>{{ __('Questions List ') }}<i class="fa-solid fa-person-circle-question me-2"></i></h2>
-        <a href="{{ route('questions.create') }}" class="btn btn-success">{{ __('+ Ask') }}</a>
+        <h2>{{ __('Questions List') }} <i class="fa-solid fa-person-circle-question me-2"></i></h2>
+        <a href="{{ route('questions.create') }}" class="btn btn-success">+ {{ __('Ask') }}</a>
     </div>
 @endsection
 
@@ -95,12 +95,12 @@
     </div>
     <script>
         /**
-                                                                                                                    setTimeout(function() {
-                                                                                                                        // document.querySelector('.alert').remove();
-                                                                                                                        //document.querySelector('.alert').style.display = 'none';
-                                                                                                                        document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
-                                                                                                                    }, 4000);
-                                                                                                            **/
+                                                                                                                                        setTimeout(function() {
+                                                                                                                                            // document.querySelector('.alert').remove();
+                                                                                                                                            //document.querySelector('.alert').style.display = 'none';
+                                                                                                                                            document.querySelector('.alert') ? document.querySelector('.alert').style.display = 'none' : '';
+                                                                                                                                        }, 4000);
+                                                                                                                                **/
 
         document.addEventListener('DOMContentLoaded', function() {
             let deleteForms = document.querySelectorAll('.delete-form');

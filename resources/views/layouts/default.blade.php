@@ -48,8 +48,8 @@
                 <form class="col-12 col-md-6  mb-3 mb-lg-0 me-lg-3" id="searchForm" method="get"
                     action="{{ route('questions.index') }}">
                     <div class="input-group">
-                        <input type="search" id="searchInput" class="form-control" placeholder="Search questions..."
-                            name="search" aria-label="Search"
+                        <input type="search" id="searchInput" class="form-control"
+                            placeholder="{{ __('Search questions...') }}" name="search" aria-label="Search"
                             style="border-radius: 25px  25px; border-right: 0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 10px; transition: all 0.3s ease;">
 
                     </div>
