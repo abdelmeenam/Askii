@@ -16,7 +16,7 @@ class QuestionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show', 'fetchQuestionSearchResults']);
+        $this->middleware(middleware: ['auth', 'verified'])->except(['index', 'show', 'fetchQuestionSearchResults']);
     }
 
 

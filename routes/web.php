@@ -79,7 +79,6 @@ Route::group(['middleware' => ['localeSessionRedirect', 'localizationRedirect', 
     // Questions
     Route::resource('questions', QuestionsController::class);
 
-
     // Roles
     Route::resource('roles', RolesController::class);
 
