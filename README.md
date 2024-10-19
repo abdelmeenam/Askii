@@ -36,12 +36,14 @@ php artisan db:seed --class=QuestionsTableSeeder
 ```
 
 
-
-
-
-
     
-## License
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Future Features
+While the current version of this project offers a robust set of functionalities, there are additional features planned for future development:
+
+- **Socialite and Two-Factor Authentication (2FA):** Enhance user security and ease of login through social media integration and 2FA.
+- **Sorting Questions and Filtering by Tags:** Improve user experience by allowing users to sort questions and filter them based on selected tags.
+- **Repository Design Pattern:** Implement a structured and maintainable codebase using the repository design pattern.
+- **Notification Settings:** Enable users to customize their notification preferences, choosing to receive updates via email or SMS.
+- **Public Profile for Users:** Create a public profile for each user showcasing all their questions, enhancing user visibility and engagement.
 
 
